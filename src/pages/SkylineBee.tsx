@@ -1,8 +1,10 @@
 import React, { useMemo, useState, useEffect } from "react";
+// Icons kept dependency-free
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Article, ARTICLES } from "./articleData";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -12,72 +14,13 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
   );
 }
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
-const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
 const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyph="➡️" className={p.className} />;
 
-const STARTER_POSTS = [
-  {
-    id: 1,
-    title: "School wifi achieves Mach 3 when no one needs it",
-    blurb: "District engineers confirm the network is fastest during finals only after midnight.",
-    category: "Campus",
-    author: "Staff",
-    date: "Dec 10, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-1/1280/720",
-  },
-  {
-    id: 2,
-    title: "Spartans unveil revolutionary new play: Give it to the fast kid",
-    blurb: "Coaches cite cutting edge analytics and a stopwatch.",
-    category: "Sports",
-    author: "Sports Desk",
-    date: "Dec 8, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-2/1280/720",
-  },
-  {
-    id: 3,
-    title: "Lunch line introduces express lane for kids with exact change",
-    blurb: "Pilot program reduces wait time to just three bells.",
-    category: "Campus",
-    author: "Cafeteria Correspondent",
-    date: "Dec 6, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-3/1280/720",
-  },
-  {
-    id: 4,
-    title: "Parking lot adds arrows as friendly suggestions",
-    blurb: "Administration clarifies that arrows are more of a vibe than a rule.",
-    category: "Opinion",
-    author: "Editorial Board",
-    date: "Dec 3, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-4/1280/720",
-  },
-  {
-    id: 5,
-    title: "New AI policy bans using robots to do push ups in PE",
-    blurb: "Students disappointed after brief golden age of perfect grades and strong biceps.",
-    category: "Tech",
-    author: "Tech Desk",
-    date: "Nov 30, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-5/1280/720",
-  },
-  {
-    id: 6,
-    title: "Counselors announce stress relief week. Homework celebrates by doubling",
-    blurb: "Teachers say it builds character. Students say it builds eye bags.",
-    category: "Opinion",
-    author: "Guest Columnist",
-    date: "Nov 28, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-6/1280/720",
-  },
-];
+type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
-const CATEGORIES = ["All", "Campus", "Sports", "Opinion", "Tech"] as const;
+type Post = Article;
 
-export type Category = typeof CATEGORIES[number];
-
-export type Post = (typeof STARTER_POSTS)[number];
-
+// --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
   const q = query.trim().toLowerCase();
   return posts.filter((p) =>
@@ -88,16 +31,18 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 backdrop-blur bg-white/70 border-b">
+    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-emerald-600 text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            {/* Tagline removed per request */}
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
+            {/* Magnifying glass removed per request */}
             <Input
               value={query}
               onChange={(e) => onSearch(e.target.value)}
@@ -111,84 +56,74 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
   );
 }
 
-function Nav({ active, setActive }: { active: Category; setActive: (c: Category) => void }) {
-  return (
-    <nav className="border-b bg-emerald-50/60">
-      <div className="max-w-6xl mx-auto px-4">
-        <ul className="flex gap-2 py-2 overflow-x-auto">
-          {CATEGORIES.map((c) => (
-            <li key={c}>
-              <Button
-                variant={active === c ? "default" : "outline"}
-                className={active === c ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-white"}
-                onClick={() => setActive(c)}
-                size="sm"
-              >
-                {c}
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-  );
-}
-
 function PostCard({ post }: { post: Post }) {
   return (
-    <Card className="hover:shadow-lg transition border border-emerald-100 overflow-hidden">
-      <img
-        src={post.imageUrl}
-        alt={post.title}
-        width={1280}
-        height={720}
-        className="w-full aspect-video object-cover"
-        loading="lazy"
-      />
-      <CardContent className="p-5">
-        <div className="flex items-center gap-2 mb-2">
-          <Badge className="bg-emerald-600 text-white">{post.category}</Badge>
-          <span className="text-xs text-muted-foreground">{post.date}</span>
-        </div>
-        <h3 className="text-xl font-bold leading-snug">{post.title}</h3>
-        <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
+    <a
+      href={`/?page=article&slug=${encodeURIComponent(post.slug)}`}
+      className="block group focus-ring-spartan rounded-2xl"
+      aria-label={`Read ${post.title}`}
+    >
+      <Card className="hover:shadow-lg transition border border-spartan-soft overflow-hidden">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          width={1280}
+          height={720}
+          className="w-full aspect-video object-cover"
+          loading="lazy"
+        />
+        <CardContent className="p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Badge className="bg-spartan text-white">{post.category}</Badge>
+            <span className="text-xs text-muted-foreground">{post.date}</span>
+          </div>
+          <h3 className="text-xl font-bold leading-snug group-hover:text-spartan transition-colors">{post.title}</h3>
+          <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
         <div className="flex items-center justify-between mt-4">
           <span className="text-xs text-muted-foreground">By {post.author}</span>
-          <Button variant="ghost" size="sm" className="gap-1">
-            Read
-            <ChevronRightIcon className="text-sm" />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+          <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
+            <ChevronRightIcon className="text-base" />
+          </span>
+          </div>
+        </CardContent>
+      </Card>
+    </a>
   );
 }
 
-function Hero() {
+function Hero({ article }: { article: Post }) {
   return (
-    <section className="bg-gradient-to-br from-emerald-50 to-white border-b">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center">
-        <div className="md:col-span-2">
+    <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
+      <div
+        className="absolute inset-0 hero-backdrop"
+        aria-hidden
+        style={{ backgroundImage: `url(${article.imageUrl})` }}
+      />
+      <div className="absolute inset-0 hero-tint" aria-hidden />
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
+        <div className="md:col-span-2 space-y-3">
+          <Badge className="bg-spartan text-white shadow">Breaking</Badge>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            Breaking: Skyline installs new bell that respects human ears
+            {article.title}
           </h2>
-          <p className="text-muted-foreground mt-3">
-            Trials begin Monday. Early reports suggest students still late, but in a calmer way.
+          <p className="text-muted-foreground">
+            {article.blurb}
           </p>
-          <div className="flex gap-3 mt-5">
-            <Button className="bg-emerald-600 hover:bg-emerald-700">Latest Stories</Button>
-            <Button asChild variant="outline">
+          <div className="flex gap-3 pt-1">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong">
+              <a href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}>Read the story</a>
+            </Button>
+            <Button asChild variant="outline" className="glass-button">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+        <div className="rounded-2xl glass-card p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
-            <NewspaperIcon className="text-base" />
             <p className="text-sm font-semibold">What is this</p>
           </div>
           <p className="text-sm text-muted-foreground">
-            The Skyline Bee is satire, parody, and humor. We are not a real news site. Names, places, and events are used playfully for laughs.
+            "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
       </div>
@@ -198,11 +133,11 @@ function Hero() {
 
 function Footer() {
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t border-spartan-soft bg-white">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-emerald-600 text-white grid place-items-center">
+            <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
             </div>
             <span className="font-bold">The Skyline Bee</span>
@@ -214,9 +149,9 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:skytheredhead@gmail.com">tips@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">ads@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">submissions@skylinebee</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
           </ul>
         </div>
         <div>
@@ -233,52 +168,69 @@ function Footer() {
   );
 }
 
+export type { Category, Post };
+
 export default function SkylineBee() {
-  const [active, setActive] = useState<Category>("All");
   const [query, setQuery] = useState("");
 
-  const posts = useMemo(() => filterPosts(STARTER_POSTS, active, query), [active, query]);
+  const posts = useMemo(() => filterPosts(ARTICLES, "All", query), [query]);
+  const heroArticle = useMemo(
+    () => ARTICLES.find((article) => article.slug === "flagpole-sptv-intro") ?? ARTICLES[0],
+    [],
+  );
 
+  // --- Runtime tests (basic) ---
   useEffect(() => {
     try {
-      console.assert(filterPosts(STARTER_POSTS, "All", "").length === STARTER_POSTS.length, "Test 1 failed: All should return all posts");
-      console.assert(filterPosts(STARTER_POSTS, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
-      console.assert(filterPosts(STARTER_POSTS, "All", "Express").length === 1, "Test 3 failed: query 'Express' should match 1 post");
-      console.assert(filterPosts(STARTER_POSTS, "Opinion", "Homework").length === 1, "Test 4 failed: Opinion + 'Homework' should match 1 post");
-      console.assert(STARTER_POSTS.every(p => typeof p.imageUrl === "string" && /\/1280\/720$/.test(p.imageUrl)), "Test 5 failed: All posts should include 1280/720 imageUrl");
+      // 1) All + empty returns all
+      console.assert(filterPosts(ARTICLES, "All", "").length === ARTICLES.length, "Test 1 failed: All should return all posts");
+      // 2) Category filter works
+      console.assert(filterPosts(ARTICLES, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
+      // 3) Query filter is case-insensitive
+      console.assert(filterPosts(ARTICLES, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
+      // 4) Combined filter
+      console.assert(filterPosts(ARTICLES, "Opinion", "democracy").length === 1, "Test 4 failed: Opinion + 'democracy' should match 1 post");
+      // 5) Every post has a 1280x720 placeholder image URL
+      console.assert(
+        ARTICLES.every(
+          (p) => typeof p.imageUrl === "string" && (p.imageUrl.includes("ufs.sh") || /\/1280\/720$/.test(p.imageUrl))
+        ),
+        "Test 5 failed: All posts should include 1280/720 imageUrl or the provided photo",
+      );
     } catch (e) {
       console.error("Runtime tests raised an error", e);
     }
   }, []);
 
   return (
-    <main className="min-h-screen bg-white text-neutral-900">
-      <Header onSearch={setQuery} query={query} />
-      <Nav active={active} setActive={setActive} />
-      <Hero />
+    <main className="page-aurora text-neutral-900">
+      <div className="page-shell">
+        <Header onSearch={setQuery} query={query} />
+        <Hero article={heroArticle} />
 
-      <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </section>
+        <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </section>
 
-      <section className="max-w-6xl mx-auto px-4 pb-12">
-        <div className="rounded-2xl border bg-emerald-50/60 p-6">
-          <h3 className="font-bold text-lg">Submit a headline</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
-          </p>
-          <div className="flex gap-3 mt-4">
-            <Input placeholder="Pitch your best headline" />
-            <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
-              <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
-            </Button>
+        <section className="max-w-6xl mx-auto px-4 pb-12">
+          <div className="rounded-2xl border border-spartan-soft bg-spartan-deep text-white backdrop-blur p-6 shadow-sm">
+            <h3 className="font-bold text-lg">Submit a headline</h3>
+            <p className="text-sm text-white-soft mt-1">
+              Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
+            </p>
+            <div className="flex gap-3 mt-4">
+              <Input placeholder="Pitch your best headline" className="bg-white text-neutral-900" />
+              <Button asChild className="bg-white text-spartan hover:bg-spartan-soft">
+                <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
+        <Footer />
+      </div>
     </main>
   );
 }

@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-@import url("https://cdn.jsdelivr.net/npm/tailwindcss@3.4.11/dist/tailwind.min.css");
+/*
+ * Use a precompiled Tailwind build so the utility classes used by the UI
+ * components render correctly in environments where the Tailwind CLI is not
+ * available. cdnjs hosts the 2.2.19 build, which covers the utility classes
+ * used in this project (spacing, grid, borders, typography, etc.).
+ */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css");
 
 :root {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -7,6 +13,15 @@
   background-color: #ffffff;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+
+  /* Skyline Spartan green pulled from the provided logo */
+  --spartan-700: #0f362b;
+  --spartan-600: #18453b;
+  --spartan-500: #1f5c46;
+  --spartan-300: #3f7f64;
+  --spartan-100: #e8f1ed;
+  --spartan-50: #f4f8f6;
+  --skyline-cool: #eaf3fb;
 }
 
 * {
@@ -16,4 +31,133 @@
 body {
   margin: 0;
   min-height: 100vh;
+}
+
+.bg-spartan {
+  background-color: var(--spartan-600);
+}
+
+.bg-spartan-strong {
+  background-color: var(--spartan-700);
+}
+
+.bg-spartan-soft {
+  background-color: var(--spartan-50);
+}
+
+.bg-spartan-tint {
+  background: linear-gradient(90deg, var(--spartan-50), #ffffff);
+}
+
+.bg-skyline-cool {
+  background: linear-gradient(135deg, #f7fbff, #f3f8f5);
+}
+
+.bg-spartan-deep {
+  background: linear-gradient(135deg, rgba(15, 54, 43, 0.96), rgba(24, 69, 59, 0.92));
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--spartan-700);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 30px rgba(15, 54, 43, 0.08);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.96);
+  color: #0a241c;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.glass-card-soft {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+}
+
+.header-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+}
+
+.bar-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.text-white-soft {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.hero-tint {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(255, 255, 255, 0.86) 0%,
+      rgba(255, 255, 255, 0.68) 48%,
+      rgba(255, 255, 255, 0.38) 100%
+    ),
+    linear-gradient(120deg, rgba(12, 99, 74, 0.32), rgba(64, 140, 109, 0.2));
+}
+
+.text-spartan {
+  color: var(--spartan-600);
+}
+
+.border-spartan-soft {
+  border-color: var(--spartan-100);
+}
+
+.focus-ring-spartan:focus-visible {
+  outline: 2px solid var(--spartan-300);
+  outline-offset: 2px;
+}
+
+.page-aurora {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at 15% 20%, rgba(26, 158, 116, 0.08), transparent 32%),
+    radial-gradient(circle at 85% 10%, rgba(26, 117, 158, 0.08), transparent 30%),
+    linear-gradient(180deg, #f9fcfb 0%, #f2f7f3 100%);
+  overflow: hidden;
+}
+
+.page-aurora::before,
+.page-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  filter: blur(80px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-aurora::before {
+  background: radial-gradient(circle at 20% 40%, rgba(31, 92, 70, 0.22), transparent 35%),
+    radial-gradient(circle at 70% 70%, rgba(25, 117, 135, 0.18), transparent 32%);
+}
+
+.page-aurora::after {
+  background: radial-gradient(circle at 80% 30%, rgba(64, 140, 109, 0.16), transparent 30%),
+    radial-gradient(circle at 35% 80%, rgba(16, 54, 43, 0.14), transparent 32%);
+}
+
+.page-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-backdrop {
+  background-size: cover;
+  background-position: center;
+  filter: blur(35px);
+  transform: scale(1.08);
+  opacity: 0.75;
 }
