@@ -26,6 +26,10 @@ function wrapPage(html: string, { title }: { title: string }) {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
             rel="stylesheet"
           />
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.11/dist/tailwind.min.css"
+          />
           <style>
             {`body { margin: 0; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; background: #fff; }
               * { box-sizing: border-box; }
