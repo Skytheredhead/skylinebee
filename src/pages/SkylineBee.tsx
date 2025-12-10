@@ -91,7 +91,7 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 bg-white shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 backdrop-blur-md bg-white/90 shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -142,7 +142,7 @@ function Nav({ active, setActive }: { active: Category; setActive: (c: Category)
 function PostCard({ post }: { post: Post }) {
   return (
     <a
-      href="/article"
+      href="/?page=article"
       className="block group focus-ring-spartan rounded-2xl"
       aria-label={`Read ${post.title}`}
     >
@@ -270,33 +270,35 @@ export default function SkylineBee() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white text-neutral-900">
-      <Header onSearch={setQuery} query={query} />
-      <Nav active={active} setActive={setActive} />
-      <Hero />
+    <main className="page-aurora text-neutral-900">
+      <div className="page-shell">
+        <Header onSearch={setQuery} query={query} />
+        <Nav active={active} setActive={setActive} />
+        <Hero />
 
-      <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </section>
+        <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </section>
 
-      <section className="max-w-6xl mx-auto px-4 pb-12">
-        <div className="rounded-2xl border border-spartan-soft bg-spartan-soft p-6">
-          <h3 className="font-bold text-lg">Submit a headline</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
-          </p>
-          <div className="flex gap-3 mt-4">
-            <Input placeholder="Pitch your best headline" />
-            <Button asChild className="bg-spartan hover:bg-spartan-strong">
-              <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
-            </Button>
+        <section className="max-w-6xl mx-auto px-4 pb-12">
+          <div className="rounded-2xl border border-spartan-soft bg-white/80 backdrop-blur p-6 shadow-sm">
+            <h3 className="font-bold text-lg">Submit a headline</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
+            </p>
+            <div className="flex gap-3 mt-4">
+              <Input placeholder="Pitch your best headline" />
+              <Button asChild className="bg-spartan hover:bg-spartan-strong">
+                <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
+        <Footer />
+      </div>
     </main>
   );
 }

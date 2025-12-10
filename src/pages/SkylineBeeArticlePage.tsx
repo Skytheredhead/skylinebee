@@ -43,7 +43,7 @@ const SAMPLE_ARTICLE: Article = {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-20 bg-white shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 backdrop-blur-md bg-white/90 shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -137,7 +137,7 @@ function Sidebar() {
             Group projects prove democracy was a mistake
           </li>
           <li className="border-b border-spartan-soft pb-2">
-            Parking lot etiquette reaches historic low
+            Club fair produces record number of signups
           </li>
           <li className="pb-2">
             Skyline student licks flagpole for 30 minutes during lunch??
@@ -163,69 +163,71 @@ export default function SkylineBeeArticlePage() {
   const article = SAMPLE_ARTICLE;
 
   return (
-    <main className="min-h-screen bg-white text-neutral-900">
-      <Header />
+    <main className="page-aurora text-neutral-900">
+      <div className="page-shell">
+        <Header />
 
-      <div className="border-b border-spartan-soft bg-spartan-tint">
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
-            <a href="/" className="flex items-center gap-2">
-              <ChevronLeft className="h-5 w-5" />
-              <span>Back to headlines</span>
-            </a>
-          </Button>
-        </div>
-      </div>
-
-      <article className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] gap-10">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
-              {article.title}
-            </h1>
-
-            <div className="mt-3">
-              <ArticleMeta article={article} />
-            </div>
-
-            <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft">
-              <img
-                src={article.imageUrl}
-                alt={article.title}
-                width={1280}
-                height={720}
-                className="w-full aspect-video object-cover"
-              />
-            </div>
-
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-neutral-900">
-              {article.body.map((para, idx) => (
-                <p key={idx}>{para}</p>
-              ))}
-            </div>
-
-            <div className="mt-10 border-t pt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-              <span>
-                This piece is satire.
-              </span>
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="h-8 px-3 text-xs border-spartan-soft text-spartan hover:bg-spartan-soft"
-              >
-                <a href="mailto:skytheredhead@gmail.com?subject=Letter%20to%20the%20Skyline%20Bee">
-                  Send a letter to the editor
-                </a>
-              </Button>
-            </div>
+        <div className="border-b border-spartan-soft bg-white/80 backdrop-blur">
+          <div className="max-w-6xl mx-auto px-4 py-3">
+            <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
+              <a href="/" className="flex items-center gap-2">
+                <ChevronLeft className="h-5 w-5" />
+                <span>Back to headlines</span>
+              </a>
+            </Button>
           </div>
-
-          <Sidebar />
         </div>
-      </article>
 
-      <Footer />
+        <article className="max-w-6xl mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] gap-10">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
+                {article.title}
+              </h1>
+
+              <div className="mt-3">
+                <ArticleMeta article={article} />
+              </div>
+
+              <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft shadow-md shadow-spartan/10">
+                <img
+                  src={article.imageUrl}
+                  alt={article.title}
+                  width={1280}
+                  height={720}
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
+
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-neutral-900">
+                {article.body.map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+
+              <div className="mt-10 border-t pt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
+                <span>
+                  This piece is satire.
+                </span>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-3 text-xs border-spartan-soft text-spartan hover:bg-spartan-soft"
+                >
+                  <a href="mailto:skytheredhead@gmail.com?subject=Letter%20to%20the%20Skyline%20Bee">
+                    Send a letter to the editor
+                  </a>
+                </Button>
+              </div>
+            </div>
+
+            <Sidebar />
+          </div>
+        </article>
+
+        <Footer />
+      </div>
     </main>
   );
 }
