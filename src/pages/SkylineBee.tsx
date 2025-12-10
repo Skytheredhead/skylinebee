@@ -31,7 +31,7 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 backdrop-blur-md bg-white/90 shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -79,11 +79,11 @@ function PostCard({ post }: { post: Post }) {
           </div>
           <h3 className="text-xl font-bold leading-snug group-hover:text-spartan transition-colors">{post.title}</h3>
           <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
-          <div className="flex items-center justify-between mt-4">
-            <span className="text-xs text-muted-foreground">By {post.author}</span>
-            <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
-              <ChevronRightIcon className="text-base" />
-            </span>
+        <div className="flex items-center justify-between mt-4">
+          <span className="text-xs text-muted-foreground">By {post.author}</span>
+          <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
+            <ChevronRightIcon className="text-base" />
+          </span>
           </div>
         </CardContent>
       </Card>
@@ -99,7 +99,7 @@ function Hero({ article }: { article: Post }) {
         aria-hidden
         style={{ backgroundImage: `url(${article.imageUrl})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 to-white/60" aria-hidden />
+      <div className="absolute inset-0 hero-tint" aria-hidden />
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
         <div className="md:col-span-2 space-y-3">
           <Badge className="bg-spartan text-white shadow">Breaking</Badge>
@@ -113,16 +113,12 @@ function Hero({ article }: { article: Post }) {
             <Button asChild className="bg-spartan hover:bg-spartan-strong">
               <a href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}>Read the story</a>
             </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/50 bg-white/70 text-spartan hover:bg-white/80 hover:text-spartan-strong"
-            >
+            <Button asChild variant="outline" className="glass-button">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl border border-white/50 bg-white/75 backdrop-blur p-5 shadow-sm">
+        <div className="rounded-2xl glass-card p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <p className="text-sm font-semibold">What is this</p>
           </div>
@@ -219,9 +215,9 @@ export default function SkylineBee() {
         </section>
 
         <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="rounded-2xl border border-spartan-soft bg-spartan-700/85 text-white backdrop-blur p-6 shadow-sm">
+          <div className="rounded-2xl border border-spartan-soft bg-spartan-deep text-white backdrop-blur p-6 shadow-sm">
             <h3 className="font-bold text-lg">Submit a headline</h3>
-            <p className="text-sm text-white/80 mt-1">
+            <p className="text-sm text-white-soft mt-1">
               Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
             </p>
             <div className="flex gap-3 mt-4">

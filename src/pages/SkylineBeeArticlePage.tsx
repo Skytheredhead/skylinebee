@@ -19,7 +19,7 @@ const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" gly
 
 function Header() {
   return (
-    <header className="sticky top-0 z-20 backdrop-blur-md bg-white/90 shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -147,7 +147,7 @@ export default function SkylineBeeArticlePage() {
       <div className="page-shell">
         <Header />
 
-        <div className="border-b border-spartan-soft bg-white/80 backdrop-blur">
+        <div className="border-b border-spartan-soft bar-glass">
           <div className="max-w-6xl mx-auto px-4 py-3">
             <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
               <a href="/" className="flex items-center gap-2">
