@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+// Icons kept dependency-free
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,7 @@ const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" cl
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
 const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyph="➡️" className={p.className} />;
 
+// --- Data ---
 const STARTER_POSTS = [
   {
     id: 1,
@@ -74,10 +76,11 @@ const STARTER_POSTS = [
 
 const CATEGORIES = ["All", "Campus", "Sports", "Opinion", "Tech"] as const;
 
-export type Category = typeof CATEGORIES[number];
+type Category = typeof CATEGORIES[number];
 
-export type Post = (typeof STARTER_POSTS)[number];
+type Post = (typeof STARTER_POSTS)[number];
 
+// --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
   const q = query.trim().toLowerCase();
   return posts.filter((p) =>
@@ -96,8 +99,10 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            {/* Tagline removed per request */}
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
+            {/* Magnifying glass removed per request */}
             <Input
               value={query}
               onChange={(e) => onSearch(e.target.value)}
@@ -233,18 +238,26 @@ function Footer() {
   );
 }
 
+export type { Category, Post };
+
 export default function SkylineBee() {
   const [active, setActive] = useState<Category>("All");
   const [query, setQuery] = useState("");
 
   const posts = useMemo(() => filterPosts(STARTER_POSTS, active, query), [active, query]);
 
+  // --- Runtime tests (basic) ---
   useEffect(() => {
     try {
+      // 1) All + empty returns all
       console.assert(filterPosts(STARTER_POSTS, "All", "").length === STARTER_POSTS.length, "Test 1 failed: All should return all posts");
+      // 2) Category filter works
       console.assert(filterPosts(STARTER_POSTS, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
+      // 3) Query filter is case-insensitive
       console.assert(filterPosts(STARTER_POSTS, "All", "Express").length === 1, "Test 3 failed: query 'Express' should match 1 post");
+      // 4) Combined filter
       console.assert(filterPosts(STARTER_POSTS, "Opinion", "Homework").length === 1, "Test 4 failed: Opinion + 'Homework' should match 1 post");
+      // 5) Every post has a 1280x720 placeholder image URL
       console.assert(STARTER_POSTS.every(p => typeof p.imageUrl === "string" && /\/1280\/720$/.test(p.imageUrl)), "Test 5 failed: All posts should include 1280/720 imageUrl");
     } catch (e) {
       console.error("Runtime tests raised an error", e);

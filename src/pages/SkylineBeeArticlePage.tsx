@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { ChevronLeft } from "lucide-react";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -14,7 +15,6 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
 
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
-const ArrowLeftIcon = (p: { className?: string }) => <Icon label="back" glyph="⬅️" className={p.className} />;
 
 type Article = {
   title: string;
@@ -30,7 +30,7 @@ const SAMPLE_ARTICLE: Article = {
   category: "Opinion",
   author: "Editorial Board",
   date: "Dec 10, 2025",
-  imageUrl: "https://picsum.photos/seed/skyline-article-1/1280/720",
+  imageUrl: "https://picsum.photos/seed/skyline-article-1/1280/720", // 720p placeholder
   body: [
     "In a bold move that nobody asked for, Skyline administration has introduced a brand new rule: phones brought to school must have at least thirty percent battery when students walk through the doors.",
     "According to a fictional memo, the decision came after an internal study showed that the number one cause of student distress was not grades, college applications, or the parking lot, but the moment their phone hit one percent in the middle of third period.",
@@ -170,7 +170,7 @@ export default function SkylineBeeArticlePage() {
         <div className="max-w-6xl mx-auto px-4 py-3">
           <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
             <a href="/" className="flex items-center gap-2">
-              <ArrowLeftIcon className="text-base" />
+              <ChevronLeft className="h-5 w-5" />
               <span>Back to headlines</span>
             </a>
           </Button>
