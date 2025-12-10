@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "lint": "echo \"no lint configuration\"",
-    "build": "tsx scripts/build.ts"
+    "build": "tsx scripts/build.tsx"
   },
   "dependencies": {
     "react": "^18.3.1",
