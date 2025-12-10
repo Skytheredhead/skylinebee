@@ -43,10 +43,10 @@ const SAMPLE_ARTICLE: Article = {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-20 backdrop-blur bg-white/70 border-b">
+    <header className="sticky top-0 z-20 bg-white shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-emerald-600 text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
@@ -66,11 +66,11 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="border-t bg-white mt-10">
+    <footer className="border-t border-spartan-soft bg-white mt-10">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-emerald-600 text-white grid place-items-center">
+            <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
             </div>
             <span className="font-bold">The Skyline Bee</span>
@@ -106,7 +106,7 @@ function Footer() {
 function ArticleMeta({ article }: { article: Article }) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
-      <Badge className="bg-emerald-600 text-white">{article.category}</Badge>
+      <Badge className="bg-spartan text-white">{article.category}</Badge>
       <span>•</span>
       <span>{article.date}</span>
       <span>•</span>
@@ -117,8 +117,8 @@ function ArticleMeta({ article }: { article: Article }) {
 
 function Sidebar() {
   return (
-    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-emerald-100">
-      <Card className="border-emerald-100 bg-emerald-50/60">
+    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft">
+      <Card className="border-spartan-soft bg-spartan-soft">
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
             <NewspaperIcon className="text-base" />
@@ -132,15 +132,15 @@ function Sidebar() {
 
       <div className="mt-6">
         <p className="text-sm font-semibold mb-2">More stories</p>
-        <ul className="space-y-2 text-sm text-emerald-900">
-          <li className="border-b border-emerald-100 pb-2">
-            Spartans unveil revolutionary new play: Give it to the fast kid
+        <ul className="space-y-2 text-sm text-spartan">
+          <li className="border-b border-spartan-soft pb-2">
+            Group projects prove democracy was a mistake
           </li>
-          <li className="border-b border-emerald-100 pb-2">
-            Lunch line introduces express lane for kids with exact change
+          <li className="border-b border-spartan-soft pb-2">
+            Parking lot etiquette reaches historic low
           </li>
           <li className="pb-2">
-            Counselors announce stress relief week. Homework celebrates by doubling
+            Skyline student licks flagpole for 30 minutes during lunch??
           </li>
         </ul>
       </div>
@@ -166,7 +166,7 @@ export default function SkylineBeeArticlePage() {
     <main className="min-h-screen bg-white text-neutral-900">
       <Header />
 
-      <div className="border-b bg-emerald-50/60">
+      <div className="border-b border-spartan-soft bg-spartan-tint">
         <div className="max-w-6xl mx-auto px-4 py-3">
           <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
             <a href="/" className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function SkylineBeeArticlePage() {
               <ArticleMeta article={article} />
             </div>
 
-            <div className="mt-4 rounded-2xl overflow-hidden border border-emerald-100">
+            <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft">
               <img
                 src={article.imageUrl}
                 alt={article.title}
@@ -208,7 +208,12 @@ export default function SkylineBeeArticlePage() {
               <span>
                 This piece is satire.
               </span>
-              <Button asChild variant="outline" size="sm" className="h-8 px-3 text-xs">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 text-xs border-spartan-soft text-spartan hover:bg-spartan-soft"
+              >
                 <a href="mailto:skytheredhead@gmail.com?subject=Letter%20to%20the%20Skyline%20Bee">
                   Send a letter to the editor
                 </a>

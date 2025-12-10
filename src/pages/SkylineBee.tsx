@@ -20,57 +20,57 @@ const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyp
 const STARTER_POSTS = [
   {
     id: 1,
-    title: "School wifi achieves Mach 3 when no one needs it",
-    blurb: "District engineers confirm the network is fastest during finals only after midnight.",
-    category: "Campus",
+    title: "Group projects prove democracy was a mistake",
+    blurb: "Majority votes to do nothing.",
+    category: "Opinion",
     author: "Staff",
     date: "Dec 10, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-1/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-101/1280/720",
   },
   {
     id: 2,
-    title: "Spartans unveil revolutionary new play: Give it to the fast kid",
-    blurb: "Coaches cite cutting edge analytics and a stopwatch.",
-    category: "Sports",
-    author: "Sports Desk",
+    title: "Club fair produces record number of signups",
+    blurb: "Attendance drops to executive board only.",
+    category: "Campus",
+    author: "Campus Desk",
     date: "Dec 8, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-2/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-102/1280/720",
   },
   {
     id: 3,
-    title: "Lunch line introduces express lane for kids with exact change",
-    blurb: "Pilot program reduces wait time to just three bells.",
-    category: "Campus",
-    author: "Cafeteria Correspondent",
+    title: "Senioritis officially upgraded to chronic condition",
+    blurb: "\"I’ve had this since sophomore year\".",
+    category: "Opinion",
+    author: "Editorial Board",
     date: "Dec 6, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-3/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-103/1280/720",
   },
   {
     id: 4,
-    title: "Parking lot adds arrows as friendly suggestions",
-    blurb: "Administration clarifies that arrows are more of a vibe than a rule.",
-    category: "Opinion",
-    author: "Editorial Board",
+    title: "Parking lot etiquette reaches historic low",
+    blurb: "Drivers consider using turn signals for the first time.",
+    category: "Sports",
+    author: "Automotive Enthusiast",
     date: "Dec 3, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-4/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-104/1280/720",
   },
   {
     id: 5,
-    title: "New AI policy bans using robots to do push ups in PE",
-    blurb: "Students disappointed after brief golden age of perfect grades and strong biceps.",
+    title: "Bathrooms updated with missing soap dispensers",
+    blurb: "Why are children breaking them off the walls?",
     category: "Tech",
-    author: "Tech Desk",
+    author: "Facilities Beat",
     date: "Nov 30, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-5/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-105/1280/720",
   },
   {
     id: 6,
-    title: "Counselors announce stress relief week. Homework celebrates by doubling",
-    blurb: "Teachers say it builds character. Students say it builds eye bags.",
-    category: "Opinion",
-    author: "Guest Columnist",
+    title: "Skyline student licks flagpole for 30 minutes during lunch??",
+    blurb: "He says it’s for an SPTV intro.",
+    category: "Campus",
+    author: "Onlooker",
     date: "Nov 28, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-6/1280/720",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-106/1280/720",
   },
 ];
 
@@ -91,10 +91,10 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 backdrop-blur bg-white/70 border-b">
+    <header className="sticky top-0 z-20 bg-white shadow-sm border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-emerald-600 text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
@@ -118,14 +118,14 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
 
 function Nav({ active, setActive }: { active: Category; setActive: (c: Category) => void }) {
   return (
-    <nav className="border-b bg-emerald-50/60">
+    <nav className="border-b border-spartan-soft bg-spartan-tint">
       <div className="max-w-6xl mx-auto px-4">
         <ul className="flex gap-2 py-2 overflow-x-auto">
           {CATEGORIES.map((c) => (
             <li key={c}>
               <Button
                 variant={active === c ? "default" : "outline"}
-                className={active === c ? "bg-emerald-600 hover:bg-emerald-700 text-white" : "bg-white"}
+                className={active === c ? "bg-spartan hover:bg-spartan-strong text-white" : "bg-white"}
                 onClick={() => setActive(c)}
                 size="sm"
               >
@@ -141,37 +141,42 @@ function Nav({ active, setActive }: { active: Category; setActive: (c: Category)
 
 function PostCard({ post }: { post: Post }) {
   return (
-    <Card className="hover:shadow-lg transition border border-emerald-100 overflow-hidden">
-      <img
-        src={post.imageUrl}
-        alt={post.title}
-        width={1280}
-        height={720}
-        className="w-full aspect-video object-cover"
-        loading="lazy"
-      />
-      <CardContent className="p-5">
-        <div className="flex items-center gap-2 mb-2">
-          <Badge className="bg-emerald-600 text-white">{post.category}</Badge>
-          <span className="text-xs text-muted-foreground">{post.date}</span>
-        </div>
-        <h3 className="text-xl font-bold leading-snug">{post.title}</h3>
-        <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
-        <div className="flex items-center justify-between mt-4">
-          <span className="text-xs text-muted-foreground">By {post.author}</span>
-          <Button variant="ghost" size="sm" className="gap-1">
-            Read
-            <ChevronRightIcon className="text-sm" />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    <a
+      href="/article"
+      className="block group focus-ring-spartan rounded-2xl"
+      aria-label={`Read ${post.title}`}
+    >
+      <Card className="hover:shadow-lg transition border border-spartan-soft overflow-hidden">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          width={1280}
+          height={720}
+          className="w-full aspect-video object-cover"
+          loading="lazy"
+        />
+        <CardContent className="p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Badge className="bg-spartan text-white">{post.category}</Badge>
+            <span className="text-xs text-muted-foreground">{post.date}</span>
+          </div>
+          <h3 className="text-xl font-bold leading-snug group-hover:text-spartan transition-colors">{post.title}</h3>
+          <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
+          <div className="flex items-center justify-between mt-4">
+            <span className="text-xs text-muted-foreground">By {post.author}</span>
+            <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
+              <ChevronRightIcon className="text-base" />
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </a>
   );
 }
 
 function Hero() {
   return (
-    <section className="bg-gradient-to-br from-emerald-50 to-white border-b">
+    <section className="bg-gradient-to-br from-[var(--spartan-50)] to-white border-b border-spartan-soft">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center">
         <div className="md:col-span-2">
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
@@ -181,13 +186,13 @@ function Hero() {
             Trials begin Monday. Early reports suggest students still late, but in a calmer way.
           </p>
           <div className="flex gap-3 mt-5">
-            <Button className="bg-emerald-600 hover:bg-emerald-700">Latest Stories</Button>
+            <Button className="bg-spartan hover:bg-spartan-strong">Latest Stories</Button>
             <Button asChild variant="outline">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+        <div className="rounded-2xl border border-spartan-soft bg-white p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <NewspaperIcon className="text-base" />
             <p className="text-sm font-semibold">What is this</p>
@@ -203,11 +208,11 @@ function Hero() {
 
 function Footer() {
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t border-spartan-soft bg-white">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-emerald-600 text-white grid place-items-center">
+            <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
             </div>
             <span className="font-bold">The Skyline Bee</span>
@@ -254,9 +259,9 @@ export default function SkylineBee() {
       // 2) Category filter works
       console.assert(filterPosts(STARTER_POSTS, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
       // 3) Query filter is case-insensitive
-      console.assert(filterPosts(STARTER_POSTS, "All", "Express").length === 1, "Test 3 failed: query 'Express' should match 1 post");
+      console.assert(filterPosts(STARTER_POSTS, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
       // 4) Combined filter
-      console.assert(filterPosts(STARTER_POSTS, "Opinion", "Homework").length === 1, "Test 4 failed: Opinion + 'Homework' should match 1 post");
+      console.assert(filterPosts(STARTER_POSTS, "Opinion", "democracy").length === 1, "Test 4 failed: Opinion + 'democracy' should match 1 post");
       // 5) Every post has a 1280x720 placeholder image URL
       console.assert(STARTER_POSTS.every(p => typeof p.imageUrl === "string" && /\/1280\/720$/.test(p.imageUrl)), "Test 5 failed: All posts should include 1280/720 imageUrl");
     } catch (e) {
@@ -277,14 +282,14 @@ export default function SkylineBee() {
       </section>
 
       <section className="max-w-6xl mx-auto px-4 pb-12">
-        <div className="rounded-2xl border bg-emerald-50/60 p-6">
+        <div className="rounded-2xl border border-spartan-soft bg-spartan-soft p-6">
           <h3 className="font-bold text-lg">Submit a headline</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
           </p>
           <div className="flex gap-3 mt-4">
             <Input placeholder="Pitch your best headline" />
-            <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
             </Button>
           </div>

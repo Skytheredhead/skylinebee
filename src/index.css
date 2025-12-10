@@ -13,6 +13,14 @@
   background-color: #ffffff;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+
+  /* Skyline Spartan green pulled from the provided logo */
+  --spartan-700: #0f362b;
+  --spartan-600: #18453b;
+  --spartan-500: #1f5c46;
+  --spartan-300: #3f7f64;
+  --spartan-100: #e8f1ed;
+  --spartan-50: #f4f8f6;
 }
 
 * {
@@ -22,4 +30,33 @@
 body {
   margin: 0;
   min-height: 100vh;
+}
+
+.bg-spartan {
+  background-color: var(--spartan-600);
+}
+
+.bg-spartan-strong {
+  background-color: var(--spartan-700);
+}
+
+.bg-spartan-soft {
+  background-color: var(--spartan-50);
+}
+
+.bg-spartan-tint {
+  background: linear-gradient(90deg, var(--spartan-50), #ffffff);
+}
+
+.text-spartan {
+  color: var(--spartan-600);
+}
+
+.border-spartan-soft {
+  border-color: var(--spartan-100);
+}
+
+.focus-ring-spartan:focus-visible {
+  outline: 2px solid var(--spartan-300);
+  outline-offset: 2px;
 }
