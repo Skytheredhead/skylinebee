@@ -14,12 +14,9 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
   );
 }
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
-const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
 const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyph="➡️" className={p.className} />;
 
-const CATEGORIES = ["All", "Campus", "Sports", "Opinion", "Tech"] as const;
-
-type Category = typeof CATEGORIES[number];
+type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
 type Post = Article;
 
@@ -56,29 +53,6 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
         </div>
       </div>
     </header>
-  );
-}
-
-function Nav({ active, setActive }: { active: Category; setActive: (c: Category) => void }) {
-  return (
-    <nav className="border-b border-spartan-soft bg-spartan-tint">
-      <div className="max-w-6xl mx-auto px-4">
-        <ul className="flex gap-2 py-2 overflow-x-auto">
-          {CATEGORIES.map((c) => (
-            <li key={c}>
-              <Button
-                variant={active === c ? "default" : "outline"}
-                className={active === c ? "bg-spartan hover:bg-spartan-strong text-white" : "bg-white"}
-                onClick={() => setActive(c)}
-                size="sm"
-              >
-                {c}
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
   );
 }
 
@@ -139,18 +113,21 @@ function Hero({ article }: { article: Post }) {
             <Button asChild className="bg-spartan hover:bg-spartan-strong">
               <a href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}>Read the story</a>
             </Button>
-            <Button asChild variant="outline" className="border-spartan-soft">
+            <Button
+              asChild
+              variant="outline"
+              className="border-white/50 bg-white/70 text-spartan hover:bg-white/80 hover:text-spartan-strong"
+            >
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl border border-spartan-soft bg-white/85 backdrop-blur p-5 shadow-sm">
+        <div className="rounded-2xl border border-white/50 bg-white/75 backdrop-blur p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
-            <NewspaperIcon className="text-base" />
             <p className="text-sm font-semibold">What is this</p>
           </div>
           <p className="text-sm text-muted-foreground">
-            The Skyline Bee is satire, parody, and humor. We are not a real news site. Names, places, and events are used playfully for laughs.
+            "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
       </div>
@@ -198,10 +175,9 @@ function Footer() {
 export type { Category, Post };
 
 export default function SkylineBee() {
-  const [active, setActive] = useState<Category>("All");
   const [query, setQuery] = useState("");
 
-  const posts = useMemo(() => filterPosts(ARTICLES, active, query), [active, query]);
+  const posts = useMemo(() => filterPosts(ARTICLES, "All", query), [query]);
   const heroArticle = useMemo(
     () => ARTICLES.find((article) => article.slug === "flagpole-sptv-intro") ?? ARTICLES[0],
     [],
@@ -234,7 +210,6 @@ export default function SkylineBee() {
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} />
-        <Nav active={active} setActive={setActive} />
         <Hero article={heroArticle} />
 
         <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
