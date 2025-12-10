@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Article, ARTICLES } from "./articleData";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -16,69 +17,11 @@ const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" cl
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
 const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyph="➡️" className={p.className} />;
 
-// --- Data ---
-const STARTER_POSTS = [
-  {
-    id: 1,
-    title: "Group projects prove democracy was a mistake",
-    blurb: "Majority votes to do nothing.",
-    category: "Opinion",
-    author: "Staff",
-    date: "Dec 10, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-101/1280/720",
-  },
-  {
-    id: 2,
-    title: "Club fair produces record number of signups",
-    blurb: "Attendance drops to executive board only.",
-    category: "Campus",
-    author: "Campus Desk",
-    date: "Dec 8, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-102/1280/720",
-  },
-  {
-    id: 3,
-    title: "Senioritis officially upgraded to chronic condition",
-    blurb: "\"I’ve had this since sophomore year\".",
-    category: "Opinion",
-    author: "Editorial Board",
-    date: "Dec 6, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-103/1280/720",
-  },
-  {
-    id: 4,
-    title: "Parking lot etiquette reaches historic low",
-    blurb: "Drivers consider using turn signals for the first time.",
-    category: "Sports",
-    author: "Automotive Enthusiast",
-    date: "Dec 3, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-104/1280/720",
-  },
-  {
-    id: 5,
-    title: "Bathrooms updated with missing soap dispensers",
-    blurb: "Why are children breaking them off the walls?",
-    category: "Tech",
-    author: "Facilities Beat",
-    date: "Nov 30, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-105/1280/720",
-  },
-  {
-    id: 6,
-    title: "Skyline student licks flagpole for 30 minutes during lunch??",
-    blurb: "He says it’s for an SPTV intro.",
-    category: "Campus",
-    author: "Onlooker",
-    date: "Nov 28, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-106/1280/720",
-  },
-];
-
 const CATEGORIES = ["All", "Campus", "Sports", "Opinion", "Tech"] as const;
 
 type Category = typeof CATEGORIES[number];
 
-type Post = (typeof STARTER_POSTS)[number];
+type Post = Article;
 
 // --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
@@ -142,7 +85,7 @@ function Nav({ active, setActive }: { active: Category; setActive: (c: Category)
 function PostCard({ post }: { post: Post }) {
   return (
     <a
-      href="/?page=article"
+      href={`/?page=article&slug=${encodeURIComponent(post.slug)}`}
       className="block group focus-ring-spartan rounded-2xl"
       aria-label={`Read ${post.title}`}
     >
@@ -174,25 +117,34 @@ function PostCard({ post }: { post: Post }) {
   );
 }
 
-function Hero() {
+function Hero({ article }: { article: Post }) {
   return (
-    <section className="bg-gradient-to-br from-[var(--spartan-50)] to-white border-b border-spartan-soft">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center">
-        <div className="md:col-span-2">
+    <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
+      <div
+        className="absolute inset-0 hero-backdrop"
+        aria-hidden
+        style={{ backgroundImage: `url(${article.imageUrl})` }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/70 to-white/60" aria-hidden />
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
+        <div className="md:col-span-2 space-y-3">
+          <Badge className="bg-spartan text-white shadow">Breaking</Badge>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            Breaking: Skyline installs new bell that respects human ears
+            {article.title}
           </h2>
-          <p className="text-muted-foreground mt-3">
-            Trials begin Monday. Early reports suggest students still late, but in a calmer way.
+          <p className="text-muted-foreground">
+            {article.blurb}
           </p>
-          <div className="flex gap-3 mt-5">
-            <Button className="bg-spartan hover:bg-spartan-strong">Latest Stories</Button>
-            <Button asChild variant="outline">
+          <div className="flex gap-3 pt-1">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong">
+              <a href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}>Read the story</a>
+            </Button>
+            <Button asChild variant="outline" className="border-spartan-soft">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl border border-spartan-soft bg-white p-5 shadow-sm">
+        <div className="rounded-2xl border border-spartan-soft bg-white/85 backdrop-blur p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <NewspaperIcon className="text-base" />
             <p className="text-sm font-semibold">What is this</p>
@@ -224,9 +176,9 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:skytheredhead@gmail.com">tips@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">ads@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">submissions@skylinebee</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
           </ul>
         </div>
         <div>
@@ -249,21 +201,30 @@ export default function SkylineBee() {
   const [active, setActive] = useState<Category>("All");
   const [query, setQuery] = useState("");
 
-  const posts = useMemo(() => filterPosts(STARTER_POSTS, active, query), [active, query]);
+  const posts = useMemo(() => filterPosts(ARTICLES, active, query), [active, query]);
+  const heroArticle = useMemo(
+    () => ARTICLES.find((article) => article.slug === "flagpole-sptv-intro") ?? ARTICLES[0],
+    [],
+  );
 
   // --- Runtime tests (basic) ---
   useEffect(() => {
     try {
       // 1) All + empty returns all
-      console.assert(filterPosts(STARTER_POSTS, "All", "").length === STARTER_POSTS.length, "Test 1 failed: All should return all posts");
+      console.assert(filterPosts(ARTICLES, "All", "").length === ARTICLES.length, "Test 1 failed: All should return all posts");
       // 2) Category filter works
-      console.assert(filterPosts(STARTER_POSTS, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
+      console.assert(filterPosts(ARTICLES, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
       // 3) Query filter is case-insensitive
-      console.assert(filterPosts(STARTER_POSTS, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
+      console.assert(filterPosts(ARTICLES, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
       // 4) Combined filter
-      console.assert(filterPosts(STARTER_POSTS, "Opinion", "democracy").length === 1, "Test 4 failed: Opinion + 'democracy' should match 1 post");
+      console.assert(filterPosts(ARTICLES, "Opinion", "democracy").length === 1, "Test 4 failed: Opinion + 'democracy' should match 1 post");
       // 5) Every post has a 1280x720 placeholder image URL
-      console.assert(STARTER_POSTS.every(p => typeof p.imageUrl === "string" && /\/1280\/720$/.test(p.imageUrl)), "Test 5 failed: All posts should include 1280/720 imageUrl");
+      console.assert(
+        ARTICLES.every(
+          (p) => typeof p.imageUrl === "string" && (p.imageUrl.includes("ufs.sh") || /\/1280\/720$/.test(p.imageUrl))
+        ),
+        "Test 5 failed: All posts should include 1280/720 imageUrl or the provided photo",
+      );
     } catch (e) {
       console.error("Runtime tests raised an error", e);
     }
@@ -274,7 +235,7 @@ export default function SkylineBee() {
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} />
         <Nav active={active} setActive={setActive} />
-        <Hero />
+        <Hero article={heroArticle} />
 
         <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
           {posts.map((post) => (
@@ -283,14 +244,14 @@ export default function SkylineBee() {
         </section>
 
         <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="rounded-2xl border border-spartan-soft bg-white/80 backdrop-blur p-6 shadow-sm">
+          <div className="rounded-2xl border border-spartan-soft bg-spartan-700/85 text-white backdrop-blur p-6 shadow-sm">
             <h3 className="font-bold text-lg">Submit a headline</h3>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-white/80 mt-1">
               Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
             </p>
             <div className="flex gap-3 mt-4">
-              <Input placeholder="Pitch your best headline" />
-              <Button asChild className="bg-spartan hover:bg-spartan-strong">
+              <Input placeholder="Pitch your best headline" className="bg-white text-neutral-900" />
+              <Button asChild className="bg-white text-spartan hover:bg-spartan-soft">
                 <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
               </Button>
             </div>

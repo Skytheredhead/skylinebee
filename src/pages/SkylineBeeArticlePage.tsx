@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ChevronLeft } from "lucide-react";
+import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -15,31 +16,6 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
 
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
-
-type Article = {
-  title: string;
-  category: string;
-  date: string;
-  author: string;
-  imageUrl: string;
-  body: string[];
-};
-
-const SAMPLE_ARTICLE: Article = {
-  title: "Skyline announces new policy: Phones must be at least 30 percent charged",
-  category: "Opinion",
-  author: "Editorial Board",
-  date: "Dec 10, 2025",
-  imageUrl: "https://picsum.photos/seed/skyline-article-1/1280/720", // 720p placeholder
-  body: [
-    "In a bold move that nobody asked for, Skyline administration has introduced a brand new rule: phones brought to school must have at least thirty percent battery when students walk through the doors.",
-    "According to a fictional memo, the decision came after an internal study showed that the number one cause of student distress was not grades, college applications, or the parking lot, but the moment their phone hit one percent in the middle of third period.",
-    "The policy states that staff may conduct random 'battery checks' before class. Students below the thirty percent threshold will be briefly escorted to a designated 'charging reflection space' to think about their life choices while their phone sits in a power strip.",
-    "Critics argue that the new rule raises serious questions. Will there be a backup plan for students whose screen time report is already embarrassing. Will the Chromebooks be jealous of all the attention the wall outlets are about to get.",
-    "Supporters of the policy say it promotes responsibility, planning ahead, and finally remembering to plug in your phone before falling asleep watching short form videos that you pretend are educational.",
-    "At press time, sources confirmed that the school wifi still drops to prehistoric speeds the second anyone actually tries to load something important."
-  ]
-};
 
 function Header() {
   return (
@@ -82,9 +58,9 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:skytheredhead@gmail.com">tips@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">ads@skylinebee</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">submissions@skylinebee</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
           </ul>
         </div>
         <div>
@@ -115,7 +91,9 @@ function ArticleMeta({ article }: { article: Article }) {
   );
 }
 
-function Sidebar() {
+function Sidebar({ currentSlug }: { currentSlug: string }) {
+  const moreStories = ARTICLES.filter((story) => story.slug !== currentSlug).slice(0, 3);
+
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft">
       <Card className="border-spartan-soft bg-spartan-soft">
@@ -133,15 +111,16 @@ function Sidebar() {
       <div className="mt-6">
         <p className="text-sm font-semibold mb-2">More stories</p>
         <ul className="space-y-2 text-sm text-spartan">
-          <li className="border-b border-spartan-soft pb-2">
-            Group projects prove democracy was a mistake
-          </li>
-          <li className="border-b border-spartan-soft pb-2">
-            Club fair produces record number of signups
-          </li>
-          <li className="pb-2">
-            Skyline student licks flagpole for 30 minutes during lunch??
-          </li>
+          {moreStories.map((story, idx) => (
+            <li
+              key={story.slug}
+              className={`pb-2 ${idx < moreStories.length - 1 ? "border-b border-spartan-soft" : ""}`}
+            >
+              <a href={`/?page=article&slug=${encodeURIComponent(story.slug)}`} className="hover:underline">
+                {story.title}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
@@ -160,7 +139,8 @@ function Sidebar() {
 }
 
 export default function SkylineBeeArticlePage() {
-  const article = SAMPLE_ARTICLE;
+  const url = new URL(window.location.href);
+  const article = getArticleBySlugOrId(url.searchParams.get("slug"), url.searchParams.get("id"));
 
   return (
     <main className="page-aurora text-neutral-900">
@@ -222,7 +202,7 @@ export default function SkylineBeeArticlePage() {
               </div>
             </div>
 
-            <Sidebar />
+            <Sidebar currentSlug={article.slug} />
           </div>
         </article>
 
