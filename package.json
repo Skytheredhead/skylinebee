@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "lint": "echo \"no lint configuration\"",
-    "build": "echo \"build step not configured\""
+    "build": "tsx scripts/build.ts"
   },
   "dependencies": {
-    "lucide-react": "^0.446.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }

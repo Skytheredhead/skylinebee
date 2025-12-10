@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft } from "lucide-react";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -15,6 +14,7 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
 
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
+const ArrowLeftIcon = (p: { className?: string }) => <Icon label="back" glyph="⬅️" className={p.className} />;
 
 type Article = {
   title: string;
@@ -170,7 +170,7 @@ export default function SkylineBeeArticlePage() {
         <div className="max-w-6xl mx-auto px-4 py-3">
           <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
             <a href="/" className="flex items-center gap-2">
-              <ChevronLeft className="h-5 w-5" />
+              <ArrowLeftIcon className="text-base" />
               <span>Back to headlines</span>
             </a>
           </Button>
