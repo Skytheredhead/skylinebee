@@ -169,13 +169,13 @@ export default function SkylineBeeArticlePage() {
                 <ArticleMeta article={article} />
               </div>
 
-              <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft shadow-md shadow-spartan/10">
+              <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft shadow-md shadow-spartan/10 max-w-3xl mx-auto">
                 <img
                   src={article.imageUrl}
                   alt={article.title}
                   width={1280}
                   height={720}
-                  className="w-full aspect-video object-cover"
+                  className="w-full h-64 md:h-72 object-cover"
                 />
               </div>
 

@@ -69,7 +69,7 @@ function PostCard({ post }: { post: Post }) {
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full aspect-video object-cover"
+          className="w-full h-48 md:h-56 object-cover"
           loading="lazy"
         />
         <CardContent className="p-5">

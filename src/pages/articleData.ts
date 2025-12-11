@@ -33,12 +33,13 @@ export const ARTICLES: Article[] = [
     blurb: "Majority votes to do nothing.",
     category: "Opinion",
     author: "Skylar Enns",
-    date: "Dec 10, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-101/1280/720",
+    date: "Dec 14, 2025",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-201/1280/720",
     body: [
-      "After another quarter of group projects, students have concluded that voting leads mostly to unanimous decisions to procrastinate.",
-      "Minutes from a recent meeting show the only agenda item was choosing a group chat name. The resulting vote produced seven options and zero completed slides.",
-      "Teachers responded by assigning peer evaluations, which were promptly ignored by the same committees formed to avoid the original work.",
+      "Let’s be honest here. When a teacher announces that there will be a group project, everyone pretends to be excited but we all know what's coming.",
+      "One strategy we all try in group projects is democracy. In the group chat, a leader is chosen and distributes the work. The leader usually does such a bad job that all of the work ends up piling on one person to finish at two in the morning before we present it the next day.",
+      "Also, when the members vote on a way of doing something in the project, the leader interrupts and overwrites the change. It moves quickly from a democracy to a dictatorship.",
+      "The leaders can’t keep getting away with this! Maybe socialism is the answer for group projects. Wait... don’t socialists have leaders too?",
     ],
   },
   {
