@@ -3,8 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft } from "lucide-react";
 import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
+import { handleLinkClick } from "@/utils/navigation";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -16,6 +16,22 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
 
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
 const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
+const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
+  <svg
+    aria-hidden
+    focusable="false"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M15 18l-6-6 6-6" />
+  </svg>
+);
 
 function Header() {
   return (
@@ -122,14 +138,15 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
             <a
               key={story.slug}
               href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
+              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
               className="flex gap-3 group"
             >
               <div className="h-24 w-28 rounded-lg overflow-hidden border border-spartan-soft shadow-sm shadow-spartan/10">
                 <img
                   src={story.imageUrl}
                   alt={story.title}
-                  width={320}
-                  height={180}
+                  width={1280}
+                  height={720}
                   className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform"
                   loading="lazy"
                 />
@@ -176,8 +193,12 @@ export default function SkylineBeeArticlePage() {
         <div className="border-b border-spartan-soft bar-glass">
           <div className="max-w-6xl mx-auto px-4 py-3">
             <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
-              <a href="/" className="flex items-center gap-2">
-                <ChevronLeft className="h-5 w-5" />
+              <a
+                href="/"
+                className="flex items-center gap-2"
+                onClick={(e) => handleLinkClick(e, "/")}
+              >
+                <ChevronLeftIcon className="h-5 w-5" />
                 <span>Back to headlines</span>
               </a>
             </Button>
@@ -201,7 +222,7 @@ export default function SkylineBeeArticlePage() {
                   alt={article.title}
                   width={1280}
                   height={720}
-                  className="w-full h-64 md:h-72 object-cover"
+                  className="w-full aspect-[16/9] object-cover"
                 />
               </div>
 

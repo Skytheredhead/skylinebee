@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect } from "react";
-// Icons kept dependency-free
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES } from "./articleData";
+import { handleLinkClick } from "@/utils/navigation";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -14,7 +14,22 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
   );
 }
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
-const ChevronRightIcon = (p: { className?: string }) => <Icon label="arrow" glyph="➡️" className={p.className} />;
+const ChevronRightIcon = ({ className = "" }: { className?: string }) => (
+  <svg
+    aria-hidden
+    focusable="false"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M9 18l6-6-6-6" />
+  </svg>
+);
 
 type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
@@ -57,9 +72,12 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
 }
 
 function PostCard({ post }: { post: Post }) {
+  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+
   return (
     <a
-      href={`/?page=article&slug=${encodeURIComponent(post.slug)}`}
+      href={href}
+      onClick={(e) => handleLinkClick(e, href)}
       className="block group focus-ring-spartan rounded-2xl"
       aria-label={`Read ${post.title}`}
     >
@@ -82,7 +100,7 @@ function PostCard({ post }: { post: Post }) {
         <div className="flex items-center justify-between mt-4">
           <span className="text-xs text-muted-foreground">By {post.author}</span>
           <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
-            <ChevronRightIcon className="text-base" />
+            <ChevronRightIcon className="h-4 w-4" />
           </span>
           </div>
         </CardContent>
@@ -111,7 +129,12 @@ function Hero({ article }: { article: Post }) {
           </p>
           <div className="flex gap-3 pt-1">
             <Button asChild className="bg-spartan hover:bg-spartan-strong">
-              <a href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}>Read the story</a>
+              <a
+                href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
+                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
+              >
+                Read the story
+              </a>
             </Button>
             <Button asChild variant="outline" className="glass-button">
               <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
