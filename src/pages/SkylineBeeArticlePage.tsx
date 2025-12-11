@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -73,9 +73,9 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
           </ul>
         </div>
         <div>
@@ -163,9 +163,14 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
       <div className="mt-6">
         <p className="text-sm font-semibold mb-2">Send us your ideas</p>
         <p className="text-xs text-muted-foreground">
-          Have a headline that belongs here. Email{" "}
-          <a href="mailto:skytheredhead@gmail.com" className="underline">
-            skytheredhead@gmail.com
+          Have a headline that belongs here. Share it through{" "}
+          <a
+            href="https://forms.gle/udmDvnCaALBYcWwD6"
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            this form
           </a>{" "}
           with your very best satire.
         </p>
@@ -178,8 +183,12 @@ export default function SkylineBeeArticlePage() {
   const url = new URL(window.location.href);
   const article = getArticleBySlugOrId(url.searchParams.get("slug"), url.searchParams.get("id"));
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [article.slug]);
+
   return (
-    <main className="page-aurora text-neutral-900">
+    <main className="page-aurora text-neutral-900 fade-in">
       <div className="page-shell">
         <Header />
 

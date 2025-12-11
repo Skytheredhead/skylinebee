@@ -19,7 +19,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Dec 10, 2025",
-    imageUrl: "https://adfdx2zloe.ufs.sh/f/dJTKSQhkzQKhJ3jveeQCmWdfzlHQS2DkvAxZuaobFGs7trP8",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWiyfhz4ejAkrPYaTithnO9G2q5pNL78KFlzs3",
     body: [
       "Lincoln Reynolds, a prominent “intro maker” of SPTV, stars in another intro for Episode 10 (coming out 12/16 on <a href=\"https://www.youtube.com/@SPTVSpartans\">Youtube</a>). This new episode’s minute-long intro will feature a film of him getting convinced to lick a flagpole by another SPTV member, Elliot Roper.",
       "He then proceeds to be a public spectacle in the middle of the drop-off loop for students and parents to stare at during lunch.",
@@ -50,7 +50,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Dec 8, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-102/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWy4GNcyVnUlYqAjT8Wbrw3gKpRdGPIN92ZxSX",
     body: [
       "Student leaders celebrated a record-breaking list of new members, immediately followed by a record-breaking ghosting rate.",
       "By week three, the club GroupMe contained fifty members, two unread announcements, and one extremely active treasurer reminding everyone to pay dues.",
@@ -65,7 +65,7 @@ export const ARTICLES: Article[] = [
     category: "Opinion",
     author: "Skylar Enns",
     date: "Dec 6, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-103/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWR3tXEanK6xSchCDJZrQTIA0Ny7pWnwvLBEPd",
     body: [
       "Doctors warn symptoms now include ignoring alarms, deleting Schoology notifications, and forgetting which day it is during midterms.",
       "Treatment options remain limited to sheer willpower and the promise of spring break, which studies show is only temporarily effective.",

@@ -4,6 +4,7 @@ export function navigateTo(url: string) {
   if (typeof window === "undefined") return;
   window.history.pushState({}, "", url);
   window.dispatchEvent(new Event("popstate"));
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 export function handleLinkClick(
