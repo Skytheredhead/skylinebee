@@ -92,7 +92,10 @@ function ArticleMeta({ article }: { article: Article }) {
 }
 
 function Sidebar({ currentSlug }: { currentSlug: string }) {
-  const moreStories = ARTICLES.filter((story) => story.slug !== currentSlug).slice(0, 3);
+  const trendingArticles = ARTICLES
+    .filter((story) => story.slug !== currentSlug)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 4);
 
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft">
@@ -109,19 +112,42 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
       </Card>
 
       <div className="mt-6">
-        <p className="text-sm font-semibold mb-2">More stories</p>
-        <ul className="space-y-2 text-sm text-spartan">
-          {moreStories.map((story, idx) => (
-            <li
+        <div className="flex items-center gap-2 mb-3">
+          <NewspaperIcon className="text-base" />
+          <p className="text-sm font-semibold">Trending Articles</p>
+        </div>
+
+        <div className="space-y-4">
+          {trendingArticles.map((story) => (
+            <a
               key={story.slug}
-              className={`pb-2 ${idx < moreStories.length - 1 ? "border-b border-spartan-soft" : ""}`}
+              href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
+              className="flex gap-3 group"
             >
-              <a href={`/?page=article&slug=${encodeURIComponent(story.slug)}`} className="hover:underline">
-                {story.title}
-              </a>
-            </li>
+              <div className="h-24 w-28 rounded-lg overflow-hidden border border-spartan-soft shadow-sm shadow-spartan/10">
+                <img
+                  src={story.imageUrl}
+                  alt={story.title}
+                  width={320}
+                  height={180}
+                  className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform"
+                  loading="lazy"
+                />
+              </div>
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <span className="font-semibold text-spartan">{story.category}</span>
+                  <span className="opacity-60">•</span>
+                  <span>{story.date}</span>
+                </div>
+                <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                  {story.title}
+                </h3>
+                <p className="text-xs text-muted-foreground">{story.blurb}</p>
+              </div>
+            </a>
           ))}
-        </ul>
+        </div>
       </div>
 
       <div className="mt-6">
