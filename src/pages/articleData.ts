@@ -50,7 +50,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Dec 8, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-102/1280/720",
+    imageUrl: "https://adfdx2zloe.ufs.sh/f/dJTKSQhkzQKhVaAoEnkek5BTSLsFiGb4r0KmQjDnYRtxMWEZ",
     body: [
       "Student leaders celebrated a record-breaking list of new members, immediately followed by a record-breaking ghosting rate.",
       "By week three, the club GroupMe contained fifty members, two unread announcements, and one extremely active treasurer reminding everyone to pay dues.",

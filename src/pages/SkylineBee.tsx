@@ -137,7 +137,13 @@ function Hero({ article }: { article: Post }) {
               </a>
             </Button>
             <Button asChild variant="outline" className="glass-button">
-              <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Tip">Submit a Tip</a>
+              <a
+                href="https://forms.gle/udmDvnCaALBYcWwD6"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Submit a Tip
+              </a>
             </Button>
           </div>
         </div>
@@ -172,9 +178,9 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
-            <li><a href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
           </ul>
         </div>
         <div>
@@ -241,12 +247,27 @@ export default function SkylineBee() {
           <div className="rounded-2xl border border-spartan-soft bg-spartan-deep text-white backdrop-blur p-6 shadow-sm">
             <h3 className="font-bold text-lg">Submit a headline</h3>
             <p className="text-sm text-white-soft mt-1">
-              Send ideas, tips, or fully written satire to <a className="underline" href="mailto:skytheredhead@gmail.com">skytheredhead@gmail.com</a>.
+              Send ideas, tips, or fully written satire through{" "}
+              <a
+                className="underline"
+                href="https://forms.gle/udmDvnCaALBYcWwD6"
+                target="_blank"
+                rel="noreferrer"
+              >
+                this form
+              </a>
+              .
             </p>
             <div className="flex gap-3 mt-4">
               <Input placeholder="Pitch your best headline" className="bg-white text-neutral-900" />
               <Button asChild className="bg-white text-spartan hover:bg-spartan-soft">
-                <a href="mailto:skytheredhead@gmail.com?subject=Skyline%20Bee%20Headline%20Pitch">Send</a>
+                <a
+                  href="https://forms.gle/udmDvnCaALBYcWwD6"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Send
+                </a>
               </Button>
             </div>
           </div>
