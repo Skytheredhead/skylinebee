@@ -181,7 +181,7 @@ export default function SkylineBeeArticlePage() {
 
               <div className="mt-6 space-y-4 text-base leading-relaxed text-neutral-900">
                 {article.body.map((para, idx) => (
-                  <p key={idx}>{para}</p>
+                  <p key={idx} dangerouslySetInnerHTML={{ __html: para }} />
                 ))}
               </div>
 

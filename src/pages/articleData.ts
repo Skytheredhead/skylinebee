@@ -15,17 +15,15 @@ export const ARTICLES: Article[] = [
     id: 6,
     slug: "flagpole-sptv-intro",
     title: "Skyline student licks flagpole for 30 minutes during lunch??",
-    blurb: "He says it’s for an SPTV intro.",
+    blurb: "Lincoln Reynolds licks a flagpole for a new SPTV intro filming during lunch.",
     category: "Campus",
-    author: "Onlooker",
-    date: "Nov 28, 2025",
+    author: "Skylar Enns",
+    date: "Dec 12, 2024",
     imageUrl: "https://adfdx2zloe.ufs.sh/f/dJTKSQhkzQKhJ3jveeQCmWdfzlHQS2DkvAxZuaobFGs7trP8",
     body: [
-      "Witnesses report that a senior voluntarily attached himself to the courtyard flagpole for a full half hour, explaining through chattering teeth that it was \"for the cold open.\"",
-      "Friends filming the ordeal offered lukewarm encouragement while repeatedly reminding him they could add CGI frost in post. He declined, saying authenticity mattered to his art.",
-      "Campus security briefly approached but left after determining there was technically no policy against licking school property for extended periods of time, as long as it was \"educational media.\"",
-      "When asked if it was worth it, the student stated he could no longer feel his face but believed the dedication would earn at least ten likes on the morning show stream.",
-      "Sources confirmed the flagpole was later wrapped in caution tape with a handwritten sign that read simply: \"Do Not Attempt.\"",
+      "Lincoln Reynolds, a prominent “intro maker” of SPTV, stars in another intro for Episode 10 (coming out 12/16 on <a href=\"https://www.youtube.com/@SPTVSpartans\">Youtube</a>). This new episode’s minute-long intro will feature a film of him getting convinced to lick a flagpole by another SPTV member, Elliot Roper.",
+      "He then proceeds to be a public spectacle in the middle of the drop-off loop for students and parents to stare at during lunch.",
+      "Skylar Enns, the director of SPTV, says he was questioned by Skyline’s Admin about what Reynolds was doing and he explained what it was. Enns adds that Admin restricts certain phrases on SPTV, like saying “Merry Christmas,” but doubts they will cut this intro given Reynolds’ dedication.",
     ],
   },
   {
@@ -34,7 +32,7 @@ export const ARTICLES: Article[] = [
     title: "Group projects prove democracy was a mistake",
     blurb: "Majority votes to do nothing.",
     category: "Opinion",
-    author: "Staff",
+    author: "Skylar Enns",
     date: "Dec 10, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-101/1280/720",
     body: [
@@ -49,7 +47,7 @@ export const ARTICLES: Article[] = [
     title: "Club fair produces record number of signups",
     blurb: "Attendance drops to executive board only.",
     category: "Campus",
-    author: "Campus Desk",
+    author: "Skylar Enns",
     date: "Dec 8, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-102/1280/720",
     body: [
@@ -64,7 +62,7 @@ export const ARTICLES: Article[] = [
     title: "Senioritis officially upgraded to chronic condition",
     blurb: "“I’ve had this since sophomore year”.",
     category: "Opinion",
-    author: "Editorial Board",
+    author: "Skylar Enns",
     date: "Dec 6, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-103/1280/720",
     body: [
@@ -79,7 +77,7 @@ export const ARTICLES: Article[] = [
     title: "Parking lot etiquette reaches historic low, drivers consider using turn signals for the first time",
     blurb: "Who gave these kids licenses?",
     category: "Sports",
-    author: "Automotive Enthusiast",
+    author: "Skylar Enns",
     date: "Dec 3, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-104/1280/720",
     body: [
@@ -94,7 +92,7 @@ export const ARTICLES: Article[] = [
     title: "Bathrooms updated with missing soap dispensers",
     blurb: "Why are children breaking them off the walls?",
     category: "Tech",
-    author: "Facilities Beat",
+    author: "Skylar Enns",
     date: "Nov 30, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-105/1280/720",
     body: [
