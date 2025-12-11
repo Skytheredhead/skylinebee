@@ -113,7 +113,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
     .slice(0, 4);
 
   return (
-    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft">
+    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft md:w-80 lg:w-96 shrink-0">
       <Card className="border-spartan-soft bg-spartan-soft">
         <CardContent className="p-4">
           <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
@@ -199,8 +199,8 @@ export default function SkylineBeeArticlePage() {
         </div>
 
         <article className="max-w-6xl mx-auto px-4 py-8">
-          <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] lg:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)] gap-10 items-start">
-            <div>
+          <div className="flex flex-col md:flex-row md:items-start md:gap-10 lg:gap-12">
+            <div className="md:min-w-0 md:flex-1">
               <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
                 {article.title}
               </h1>
