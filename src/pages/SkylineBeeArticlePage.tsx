@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -183,8 +183,12 @@ export default function SkylineBeeArticlePage() {
   const url = new URL(window.location.href);
   const article = getArticleBySlugOrId(url.searchParams.get("slug"), url.searchParams.get("id"));
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [article.slug]);
+
   return (
-    <main className="page-aurora text-neutral-900">
+    <main className="page-aurora text-neutral-900 fade-in">
       <div className="page-shell">
         <Header />
 

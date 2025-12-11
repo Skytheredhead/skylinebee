@@ -161,3 +161,16 @@ body {
   transform: scale(1.08);
   opacity: 0.75;
 }
+
+.fade-in {
+  animation: page-fade 50ms ease-in;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

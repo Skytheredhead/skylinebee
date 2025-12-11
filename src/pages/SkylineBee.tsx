@@ -208,6 +208,10 @@ export default function SkylineBee() {
     [],
   );
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   // --- Runtime tests (basic) ---
   useEffect(() => {
     try {
@@ -232,7 +236,7 @@ export default function SkylineBee() {
   }, []);
 
   return (
-    <main className="page-aurora text-neutral-900">
+    <main className="page-aurora text-neutral-900 fade-in">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} />
         <Hero article={heroArticle} />
@@ -258,18 +262,6 @@ export default function SkylineBee() {
               </a>
               .
             </p>
-            <div className="flex gap-3 mt-4">
-              <Input placeholder="Pitch your best headline" className="bg-white text-neutral-900" />
-              <Button asChild className="bg-white text-spartan hover:bg-spartan-soft">
-                <a
-                  href="https://forms.gle/udmDvnCaALBYcWwD6"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Send
-                </a>
-              </Button>
-            </div>
           </div>
         </section>
 
