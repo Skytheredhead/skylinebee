@@ -18,7 +18,7 @@ export const ARTICLES: Article[] = [
     blurb: "Lincoln Reynolds licks a flagpole for a new SPTV intro filming during lunch.",
     category: "Campus",
     author: "Skylar Enns",
-    date: "Dec 12, 2024",
+    date: "Dec 10, 2025",
     imageUrl: "https://adfdx2zloe.ufs.sh/f/dJTKSQhkzQKhJ3jveeQCmWdfzlHQS2DkvAxZuaobFGs7trP8",
     body: [
       "Lincoln Reynolds, a prominent “intro maker” of SPTV, stars in another intro for Episode 10 (coming out 12/16 on <a href=\"https://www.youtube.com/@SPTVSpartans\">Youtube</a>). This new episode’s minute-long intro will feature a film of him getting convinced to lick a flagpole by another SPTV member, Elliot Roper.",
@@ -33,7 +33,7 @@ export const ARTICLES: Article[] = [
     blurb: "Majority votes to do nothing.",
     category: "Opinion",
     author: "Skylar Enns",
-    date: "Dec 14, 2025",
+    date: "Dec 10, 2025",
     imageUrl: "https://picsum.photos/seed/skyline-bee-201/1280/720",
     body: [
       "Let’s be honest here. When a teacher announces that there will be a group project, everyone pretends to be excited but we all know what's coming.",
