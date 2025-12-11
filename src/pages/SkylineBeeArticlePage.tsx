@@ -15,7 +15,6 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
 }
 
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
-const NewspaperIcon = (p: { className?: string }) => <Icon label="newspaper" glyph="📰" className={p.className} />;
 const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
   <svg
     aria-hidden
@@ -117,21 +116,15 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
     <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft">
       <Card className="border-spartan-soft bg-spartan-soft">
         <CardContent className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <NewspaperIcon className="text-base" />
-            <p className="text-sm font-semibold">About The Skyline Bee</p>
-          </div>
+          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
           <p className="text-xs text-muted-foreground">
-            The Skyline Bee is satire, parody, and humor. We are not a real news site. Names, places, and events are used playfully for laughs.
+            "All articles (might be) fictional satire created for a class project."
           </p>
         </CardContent>
       </Card>
 
       <div className="mt-6">
-        <div className="flex items-center gap-2 mb-3">
-          <NewspaperIcon className="text-base" />
-          <p className="text-sm font-semibold">Trending Articles</p>
-        </div>
+        <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
         <div className="space-y-4">
           {trendingArticles.map((story) => (
@@ -206,7 +199,7 @@ export default function SkylineBeeArticlePage() {
         </div>
 
         <article className="max-w-6xl mx-auto px-4 py-8">
-          <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] gap-10">
+          <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(260px,1fr)] lg:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)] gap-10 items-start">
             <div>
               <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
                 {article.title}
@@ -232,20 +225,8 @@ export default function SkylineBeeArticlePage() {
                 ))}
               </div>
 
-              <div className="mt-10 border-t pt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-                <span>
-                  This piece is satire.
-                </span>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="h-8 px-3 text-xs border-spartan-soft text-spartan hover:bg-spartan-soft"
-                >
-                  <a href="mailto:skytheredhead@gmail.com?subject=Letter%20to%20the%20Skyline%20Bee">
-                    Send a letter to the editor
-                  </a>
-                </Button>
+              <div className="mt-10 border-t pt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                <span>This piece is satire.</span>
               </div>
             </div>
 
