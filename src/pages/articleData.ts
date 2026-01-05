@@ -49,7 +49,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Jan 5, 2026",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-302/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWo1uOMj5DbYXnsWkB2FH4KjwZUaGQdq9R7eO1",
     body: [
       "The Issaquah School District has yet again released a set of “survey results”. Scrolling down to the “comparison to previous years” section, the district reveals no change from last year’s results.",
       "An anonymous student said, “I clicked random answers so I could go back to scrolling TikTok.” It appears that the only thing these surveys have done is take up students’ time.",
