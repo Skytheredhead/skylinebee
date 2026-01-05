@@ -71,19 +71,15 @@ function Footer() {
           </p>
         </div>
         <div>
+          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
+          <p className="text-sm text-muted-foreground">
+            "All articles (might be) fictional satire created for a class project."
+          </p>
+        </div>
+        <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm font-semibold mb-2">Policies</p>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li>Satire and Parody Disclaimer</li>
-            <li>Corrections</li>
-            <li>Privacy</li>
           </ul>
         </div>
       </div>
@@ -114,16 +110,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
 
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft md:w-80 lg:w-96 shrink-0">
-      <Card className="border-spartan-soft bg-spartan-soft">
-        <CardContent className="p-4">
-          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
-          <p className="text-xs text-muted-foreground">
-            "All articles (might be) fictional satire created for a class project."
-          </p>
-        </CardContent>
-      </Card>
-
-      <div className="mt-6">
+      <div className="mt-0 md:mt-6">
         <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
         <div className="space-y-4">
@@ -232,10 +219,6 @@ export default function SkylineBeeArticlePage() {
                 {article.body.map((para, idx) => (
                   <p key={idx} dangerouslySetInnerHTML={{ __html: para }} />
                 ))}
-              </div>
-
-              <div className="mt-10 border-t pt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                <span>This piece is satire.</span>
               </div>
             </div>
 

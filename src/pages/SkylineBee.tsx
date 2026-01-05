@@ -35,6 +35,13 @@ type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
 type Post = Article;
 
+function pickDailyHero(posts: Post[]): Post {
+  const todayKey = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local time
+  const hash = Array.from(todayKey).reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 2147483647, 0);
+  const index = posts.length > 0 ? hash % posts.length : 0;
+  return posts[index] ?? posts[0];
+}
+
 // --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
   const q = query.trim().toLowerCase();
@@ -176,19 +183,15 @@ function Footer() {
           </p>
         </div>
         <div>
+          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
+          <p className="text-sm text-muted-foreground">
+            "All articles (might be) fictional satire created for a class project."
+          </p>
+        </div>
+        <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm font-semibold mb-2">Policies</p>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li>Satire and Parody Disclaimer</li>
-            <li>Corrections</li>
-            <li>Privacy</li>
           </ul>
         </div>
       </div>
@@ -203,10 +206,7 @@ export default function SkylineBee() {
   const [query, setQuery] = useState("");
 
   const posts = useMemo(() => filterPosts(ARTICLES, "All", query), [query]);
-  const heroArticle = useMemo(
-    () => ARTICLES.find((article) => article.slug === "flagpole-sptv-intro") ?? ARTICLES[0],
-    [],
-  );
+  const heroArticle = useMemo(() => pickDailyHero(ARTICLES), []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -218,7 +218,7 @@ export default function SkylineBee() {
       // 1) All + empty returns all
       console.assert(filterPosts(ARTICLES, "All", "").length === ARTICLES.length, "Test 1 failed: All should return all posts");
       // 2) Category filter works
-      console.assert(filterPosts(ARTICLES, "Sports", "").length === 1, "Test 2 failed: Sports should return 1 post");
+      console.assert(filterPosts(ARTICLES, "Campus", "").length === 6, "Test 2 failed: Campus should return 6 posts");
       // 3) Query filter is case-insensitive
       console.assert(filterPosts(ARTICLES, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
       // 4) Combined filter
