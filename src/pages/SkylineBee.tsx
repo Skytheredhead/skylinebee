@@ -163,7 +163,7 @@ function Hero({ article }: { article: Post }) {
 function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-6">
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
@@ -173,6 +173,12 @@ function Footer() {
           </div>
           <p className="text-xs text-muted-foreground mt-3">
             Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
+          </p>
+        </div>
+        <div>
+          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
+          <p className="text-sm text-muted-foreground">
+            "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
         <div>

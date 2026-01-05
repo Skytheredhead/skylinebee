@@ -58,7 +58,7 @@ function Header() {
 function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white mt-10">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-6">
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
         <div>
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
@@ -68,6 +68,12 @@ function Footer() {
           </div>
           <p className="text-xs text-muted-foreground mt-3">
             Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
+          </p>
+        </div>
+        <div>
+          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
+          <p className="text-sm text-muted-foreground">
+            "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
         <div>
@@ -104,16 +110,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
 
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft md:w-80 lg:w-96 shrink-0">
-      <Card className="border-spartan-soft bg-spartan-soft">
-        <CardContent className="p-4">
-          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
-          <p className="text-xs text-muted-foreground">
-            "All articles (might be) fictional satire created for a class project."
-          </p>
-        </CardContent>
-      </Card>
-
-      <div className="mt-6">
+      <div className="mt-0 md:mt-6">
         <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
         <div className="space-y-4">
@@ -222,10 +219,6 @@ export default function SkylineBeeArticlePage() {
                 {article.body.map((para, idx) => (
                   <p key={idx} dangerouslySetInnerHTML={{ __html: para }} />
                 ))}
-              </div>
-
-              <div className="mt-10 border-t pt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                <span>This piece is satire.</span>
               </div>
             </div>
 
