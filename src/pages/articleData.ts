@@ -12,6 +12,21 @@ export type Article = {
 
 export const ARTICLES: Article[] = [
   {
+    id: 7,
+    slug: "club-attendance-drops-after-fair",
+    title: "Club attendance drops to executive board only after club fair",
+    blurb: "Record signups evaporate into radio silence once the raffle tickets run out.",
+    category: "Campus",
+    author: "Skylar Enns",
+    date: "Jan 5, 2026",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-301/1280/720",
+    body: [
+      "With the students forced to go to the annual Skyline Club Fair earlier this school year, it led to a record number of signups compared to the number zero.",
+      "However, after the hype of said club fair, none of the signups actually led to real attendees, in fact the members who were attending have stopped due to “homework” which we all know means “Minecraft”.",
+      "Anyone want to start a Minecraft club?",
+    ],
+  },
+  {
     id: 6,
     slug: "flagpole-sptv-intro",
     title: "Skyline student licks flagpole for 30 minutes during lunch??",
