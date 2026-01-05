@@ -12,6 +12,36 @@ export type Article = {
 
 export const ARTICLES: Article[] = [
   {
+    id: 10,
+    slug: "admin-rules-just-suggestions",
+    title: "Admin admits rules were ‘more of a suggestion anyway’",
+    blurb: "Hallway vaping rings thrive while enforcement hinges on break-room coffee quality.",
+    category: "Campus",
+    author: "Skylar Enns",
+    date: "Jan 5, 2026",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-304/1280/720",
+    body: [
+      "Gangsters have been rampaging through the hallways of Skyline High School, ripping fat vapes in the bathrooms, and having one member stick in the hallway outside to “look out for Admin.”",
+      "In front of a “please walk!” sign, I interviewed an anonymous admin member who said that he enforces the rules depending on how good the coffee was in the break room.",
+      "As I was exiting the building, I observed a group of students in full sprint coming out of the bathroom. It appears that Admin has enforcement strictly under control. I’m glad to be a part of this safe community!",
+    ],
+  },
+  {
+    id: 11,
+    slug: "senioritis-upgraded-chronic-condition",
+    title: "Senioritis officially upgraded to chronic condition | “I’ve had this since sophomore year”",
+    blurb: "District jokes about returning to online school as symptoms spread faster than expected.",
+    category: "Campus",
+    author: "Skylar Enns",
+    date: "Jan 5, 2026",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-305/1280/720",
+    body: [
+      "According to a study from the Department of Teaching Assistants, senioritis has started to spread to more than just the senior class. It started to spread to the Juniors approximately 6 years ago, and this year, it’s even been reported reaching the sophomores.",
+      "An anonymous student said “I had senioritis back in 8th grade.” That report seems to render the previous study inaccurate, as senioritis is spreading much faster than anticipated.",
+      "Update: The district just posted on X “We need to go back to online schooling to prevent the spread of senioritis”",
+    ],
+  },
+  {
     id: 8,
     slug: "district-surveys-do-nothing",
     title: "District studies show the district’s surveys do nothing",
