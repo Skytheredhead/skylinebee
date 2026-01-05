@@ -35,6 +35,13 @@ type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
 type Post = Article;
 
+function pickDailyHero(posts: Post[]): Post {
+  const todayKey = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local time
+  const hash = Array.from(todayKey).reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 2147483647, 0);
+  const index = posts.length > 0 ? hash % posts.length : 0;
+  return posts[index] ?? posts[0];
+}
+
 // --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
   const q = query.trim().toLowerCase();
@@ -199,10 +206,7 @@ export default function SkylineBee() {
   const [query, setQuery] = useState("");
 
   const posts = useMemo(() => filterPosts(ARTICLES, "All", query), [query]);
-  const heroArticle = useMemo(
-    () => ARTICLES.find((article) => article.slug === "flagpole-sptv-intro") ?? ARTICLES[0],
-    [],
-  );
+  const heroArticle = useMemo(() => pickDailyHero(ARTICLES), []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
