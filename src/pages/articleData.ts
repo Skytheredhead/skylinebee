@@ -19,7 +19,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Jan 5, 2026",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-304/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWlBJp4kE1dzRnjLrmiMJY27TBcOoVh08HqvQZ",
     body: [
       "Gangsters have been rampaging through the hallways of Skyline High School, ripping fat vapes in the bathrooms, and having one member stick in the hallway outside to “look out for Admin.”",
       "In front of a “please walk!” sign, I interviewed an anonymous admin member who said that he enforces the rules depending on how good the coffee was in the break room.",
@@ -64,7 +64,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Jan 5, 2026",
-    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWZnGo8J0v58qdvi9jzXTneCr3QwhBR7u1bPcx",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWUXIKvVZ1aFBK7ZfeczNIL9umHj3okdW5iPGA",
     body: [
       "As we approach finals week, school spirit is clearly at an all time low. I interviewed a person in the Skyline Commons who claimed he was a math teacher.",
       "He said, “Yeah, I used a logarithmic decline with the line of y = mx+b” So much did it actually decline? “Compared to five years ago, spirit has declined over 80 percent!”  He exclaimed proudly.",
