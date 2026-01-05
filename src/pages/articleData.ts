@@ -117,36 +117,6 @@ export const ARTICLES: Article[] = [
       "The leaders can’t keep getting away with this! Maybe socialism is the answer for group projects. Wait... don’t socialists have leaders too?",
     ],
   },
-  {
-    id: 4,
-    slug: "parking-lot-etiquette-low",
-    title: "Parking lot etiquette reaches historic low, drivers consider using turn signals for the first time",
-    blurb: "Who gave these kids licenses?",
-    category: "Sports",
-    author: "Skylar Enns",
-    date: "Dec 3, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-104/1280/720",
-    body: [
-      "Officials report that the morning commute now resembles a slow-motion action movie, minus the budget for special effects or choreography.",
-      "Student drivers were seen rolling down windows to ask, politely, what a blinker does. Research is ongoing.",
-      "Meanwhile, crosswalks remain decorative suggestions, according to an anonymous traffic cone.",
-    ],
-  },
-  {
-    id: 5,
-    slug: "bathrooms-missing-dispensers",
-    title: "Bathrooms updated with missing soap dispensers",
-    blurb: "Why are children breaking them off the walls?",
-    category: "Tech",
-    author: "Skylar Enns",
-    date: "Nov 30, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-105/1280/720",
-    body: [
-      "Maintenance crews unveiled the district's newest minimalist bathroom design: soap dispensers removed entirely after the fifth replacement week.",
-      "Students describe the look as \"industrial chic\" and \"hope you brought hand sanitizer.\"",
-      "Administrators promise to revisit the issue as soon as they solve the paper towel dispenser mystery.",
-    ],
-  },
 ];
 
 export function getArticleBySlugOrId(slugParam?: string | null, idParam?: string | null): Article {
