@@ -64,7 +64,7 @@ export const ARTICLES: Article[] = [
     category: "Campus",
     author: "Skylar Enns",
     date: "Jan 5, 2026",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-303/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWZnGo8J0v58qdvi9jzXTneCr3QwhBR7u1bPcx",
     body: [
       "As we approach finals week, school spirit is clearly at an all time low. I interviewed a person in the Skyline Commons who claimed he was a math teacher.",
       "He said, “Yeah, I used a logarithmic decline with the line of y = mx+b” So much did it actually decline? “Compared to five years ago, spirit has declined over 80 percent!”  He exclaimed proudly.",
@@ -109,7 +109,7 @@ export const ARTICLES: Article[] = [
     category: "Opinion",
     author: "Skylar Enns",
     date: "Dec 10, 2025",
-    imageUrl: "https://picsum.photos/seed/skyline-bee-201/1280/720",
+    imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWQNLmcgCuL0Dbpg5v6Uw9YofTVneNGri2dtlB",
     body: [
       "Let’s be honest here. When a teacher announces that there will be a group project, everyone pretends to be excited but we all know what's coming.",
       "One strategy we all try in group projects is democracy. In the group chat, a leader is chosen and distributes the work. The leader usually does such a bad job that all of the work ends up piling on one person to finish at two in the morning before we present it the next day.",
