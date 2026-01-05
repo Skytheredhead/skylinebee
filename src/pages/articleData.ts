@@ -12,6 +12,36 @@ export type Article = {
 
 export const ARTICLES: Article[] = [
   {
+    id: 8,
+    slug: "district-surveys-do-nothing",
+    title: "District studies show the district’s surveys do nothing",
+    blurb: "Annual results unchanged; students admit to speed-running the answers.",
+    category: "Campus",
+    author: "Skylar Enns",
+    date: "Jan 5, 2026",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-302/1280/720",
+    body: [
+      "The Issaquah School District has yet again released a set of “survey results”. Scrolling down to the “comparison to previous years” section, the district reveals no change from last year’s results.",
+      "An anonymous student said, “I clicked random answers so I could go back to scrolling TikTok.” It appears that the only thing these surveys have done is take up students’ time.",
+      "Next year’s survey is bound to show some promising results. It’s always “just one more”.",
+    ],
+  },
+  {
+    id: 9,
+    slug: "school-spirit-approaches-zero",
+    title: "Math teachers confirm school spirit approaches zero",
+    blurb: "Logarithmic decline charts the vanishing hype heading into finals week.",
+    category: "Campus",
+    author: "Skylar Enns",
+    date: "Jan 5, 2026",
+    imageUrl: "https://picsum.photos/seed/skyline-bee-303/1280/720",
+    body: [
+      "As we approach finals week, school spirit is clearly at an all time low. I interviewed a person in the Skyline Commons who claimed he was a math teacher.",
+      "He said, “Yeah, I used a logarithmic decline with the line of y = mx+b” So much did it actually decline? “Compared to five years ago, spirit has declined over 80 percent!”  He exclaimed proudly.",
+      "Compare that to the neighboring school, Eastlake, which is focused on things like “moving the library to a portable in the middle of the parking lot” which has somehow led to exceeding amounts of school spirit! Maybe they should do a district survey to show the results!",
+    ],
+  },
+  {
     id: 7,
     slug: "club-attendance-drops-after-fair",
     title: "Club attendance drops to executive board only after club fair",
