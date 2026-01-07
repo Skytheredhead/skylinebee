@@ -37,6 +37,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background-color: #e6eeea;
 }
 
 .bg-spartan {
@@ -171,6 +172,55 @@ body {
     inset 0 -2px 4px rgba(255, 255, 255, 0.7);
 }
 
+.card-animate {
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.card-animate:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 40px rgba(15, 54, 43, 0.18);
+}
+
+.card-animate:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.card-media {
+  transition: transform 260ms ease, filter 260ms ease;
+}
+
+.card-animate:hover .card-media {
+  transform: scale(1.03);
+  filter: saturate(1.05);
+}
+
+.article-hero {
+  transition: transform 320ms ease, box-shadow 320ms ease;
+}
+
+@supports (view-transition-name: none) {
+  ::view-transition-old(root) {
+    animation: fade-out 200ms ease both;
+  }
+
+  ::view-transition-new(root) {
+    animation: fade-in 260ms ease both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-animate,
+  .card-media,
+  .article-hero {
+    transition: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms;
+  }
+}
+
 .page-aurora::before,
 .page-aurora::after {
   content: "";
@@ -210,6 +260,24 @@ body {
 }
 
 @keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
   from {
     opacity: 0;
   }

@@ -16,5 +16,11 @@ export function handleLinkClick(
   }
 
   event.preventDefault();
-  navigateTo(href);
+  const startViewTransition = (document as Document & { startViewTransition?: (cb: () => void) => void })
+    .startViewTransition;
+  if (startViewTransition) {
+    startViewTransition(() => navigateTo(href));
+  } else {
+    navigateTo(href);
+  }
 }

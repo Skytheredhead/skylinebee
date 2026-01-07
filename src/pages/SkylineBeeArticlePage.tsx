@@ -196,7 +196,10 @@ export default function SkylineBeeArticlePage() {
 
         <article className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row md:items-start md:gap-10 lg:gap-12">
-            <div className="md:min-w-0 md:flex-1">
+            <div
+              className="md:min-w-0 md:flex-1"
+              style={{ viewTransitionName: `card-${article.slug}` } as React.CSSProperties}
+            >
               <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
                 {article.title}
               </h1>
@@ -205,7 +208,10 @@ export default function SkylineBeeArticlePage() {
                 <ArticleMeta article={article} />
               </div>
 
-              <div className="mt-4 rounded-2xl overflow-hidden surface-card max-w-3xl mx-auto">
+              <div
+                className="mt-4 rounded-2xl overflow-hidden surface-card article-hero max-w-3xl mx-auto"
+                style={{ viewTransitionName: `image-${article.slug}` } as React.CSSProperties}
+              >
                 <img
                   src={article.imageUrl}
                   alt={article.title}

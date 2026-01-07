@@ -85,17 +85,21 @@ function PostCard({ post }: { post: Post }) {
     <a
       href={href}
       onClick={(e) => handleLinkClick(e, href)}
-      className="block group focus-ring-spartan rounded-2xl"
+      className="block group focus-ring-spartan rounded-2xl active:scale-[0.99] transition-transform"
       aria-label={`Read ${post.title}`}
     >
-      <Card className="glass-card-soft hover:shadow-xl transition border-0 overflow-hidden">
+      <Card
+        className="glass-card-soft card-animate border-0 overflow-hidden"
+        style={{ viewTransitionName: `card-${post.slug}` } as React.CSSProperties}
+      >
         <img
           src={post.imageUrl}
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full aspect-[16/9] md:aspect-[4/3] object-cover"
+          className="w-full aspect-[16/9] md:aspect-[4/3] object-cover card-media"
           loading="lazy"
+          style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
         />
         <CardContent className="p-5">
           <div className="flex items-center gap-2 mb-2">
