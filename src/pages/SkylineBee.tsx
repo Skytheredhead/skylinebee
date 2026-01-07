@@ -53,7 +53,7 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -69,7 +69,7 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-9"
+              className="h-9 border-0 surface-inset"
             />
           </div>
         </div>
@@ -88,13 +88,13 @@ function PostCard({ post }: { post: Post }) {
       className="block group focus-ring-spartan rounded-2xl"
       aria-label={`Read ${post.title}`}
     >
-      <Card className="hover:shadow-lg transition border border-spartan-soft overflow-hidden">
+      <Card className="glass-card-soft hover:shadow-xl transition border-0 overflow-hidden">
         <img
           src={post.imageUrl}
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full h-48 md:h-56 object-cover"
+          className="w-full aspect-[16/9] md:aspect-[4/3] object-cover"
           loading="lazy"
         />
         <CardContent className="p-5">
@@ -154,7 +154,7 @@ function Hero({ article }: { article: Post }) {
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl glass-card p-5 shadow-sm">
+        <div className="rounded-2xl surface-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <p className="text-sm font-semibold">What is this</p>
           </div>
@@ -248,7 +248,7 @@ export default function SkylineBee() {
         </section>
 
         <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="rounded-2xl border border-spartan-soft bg-spartan-deep text-white backdrop-blur p-6 shadow-sm">
+          <div className="rounded-2xl bg-spartan-deep text-white backdrop-blur p-6 shadow-lg">
             <h3 className="font-bold text-lg">Submit a headline</h3>
             <p className="text-sm text-white-soft mt-1">
               Send ideas, tips, or fully written satire through{" "}

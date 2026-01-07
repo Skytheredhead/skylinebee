@@ -34,7 +34,7 @@ const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
 
 function Header() {
   return (
-    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
           <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
@@ -46,7 +46,7 @@ function Header() {
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             <Input
               placeholder="Search headlines"
-              className="h-9"
+              className="h-9 border-0 surface-inset"
             />
           </div>
         </div>
@@ -109,7 +109,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
     .slice(0, 4);
 
   return (
-    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft md:w-80 lg:w-96 shrink-0">
+    <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0">
       <div className="mt-0 md:mt-6">
         <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
@@ -121,7 +121,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
               onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
               className="flex gap-3 group"
             >
-              <div className="h-24 w-28 rounded-lg overflow-hidden border border-spartan-soft shadow-sm shadow-spartan/10">
+              <div className="h-24 w-28 rounded-lg overflow-hidden surface-card-muted">
                 <img
                   src={story.imageUrl}
                   alt={story.title}
@@ -179,7 +179,7 @@ export default function SkylineBeeArticlePage() {
       <div className="page-shell">
         <Header />
 
-        <div className="border-b border-spartan-soft bar-glass">
+        <div className="bar-glass">
           <div className="max-w-6xl mx-auto px-4 py-3">
             <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
               <a
@@ -205,7 +205,7 @@ export default function SkylineBeeArticlePage() {
                 <ArticleMeta article={article} />
               </div>
 
-              <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft shadow-md shadow-spartan/10 max-w-3xl mx-auto">
+              <div className="mt-4 rounded-2xl overflow-hidden surface-card max-w-3xl mx-auto">
                 <img
                   src={article.imageUrl}
                   alt={article.title}
