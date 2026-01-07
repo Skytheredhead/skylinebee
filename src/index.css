@@ -220,19 +220,6 @@ body {
   filter: drop-shadow(0 6px 12px rgba(15, 54, 43, 0.18));
 }
 
-.headline-title {
-  display: inline-block;
-}
-
-.headline-letter {
-  display: inline-block;
-  transition: transform 180ms ease, color 180ms ease;
-}
-
-.headline-title:hover .headline-letter {
-  transform: translateY(-2px) scale(1.06);
-}
-
 .float-hover {
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
@@ -258,7 +245,6 @@ body {
   .article-hero,
   .button-animate,
   .logo-animate,
-  .headline-letter,
   .float-hover {
     transition: none;
   }

@@ -121,12 +121,6 @@ function PostCard({ post }: { post: Post }) {
 }
 
 function Hero({ article }: { article: Post }) {
-  const headline = article.title.split("").map((char, index) => (
-    <span key={`${char}-${index}`} className="headline-letter" aria-hidden="true">
-      {char === " " ? "\u00A0" : char}
-    </span>
-  ));
-
   return (
     <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
       <div
@@ -138,13 +132,7 @@ function Hero({ article }: { article: Post }) {
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
         <div className="md:col-span-2 space-y-3">
           <Badge className="bg-spartan text-white shadow">Breaking</Badge>
-          <h2
-            className="text-3xl md:text-4xl font-black tracking-tight headline-title"
-            aria-label={article.title}
-            role="text"
-          >
-            {headline}
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight">{article.title}</h2>
           <p className="text-muted-foreground">
             {article.blurb}
           </p>
@@ -185,7 +173,7 @@ function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
-        <div className="float-hover">
+        <div>
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
@@ -196,13 +184,13 @@ function Footer() {
             Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
           </p>
         </div>
-        <div className="float-hover">
+        <div>
           <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
           <p className="text-sm text-muted-foreground">
             "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
-        <div className="float-hover">
+        <div>
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
