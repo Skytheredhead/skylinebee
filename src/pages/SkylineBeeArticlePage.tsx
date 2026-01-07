@@ -34,19 +34,19 @@ const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
 
 function Header() {
   return (
-    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             <Input
               placeholder="Search headlines"
-              className="h-9"
+              className="h-9 border-0 surface-input"
             />
           </div>
         </div>
@@ -109,38 +109,40 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
     .slice(0, 4);
 
   return (
-    <aside className="mt-10 md:mt-0 md:pl-8 md:border-l md:border-spartan-soft md:w-80 lg:w-96 shrink-0">
-      <div className="mt-0 md:mt-6">
+    <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0">
+      <div className="mt-0 md:mt-6 rounded-2xl surface-card p-4">
         <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {trendingArticles.map((story) => (
             <a
               key={story.slug}
               href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
               onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-              className="flex gap-3 group"
+              className="group block focus-ring-spartan rounded-2xl"
             >
-              <div className="h-24 w-28 rounded-lg overflow-hidden border border-spartan-soft shadow-sm shadow-spartan/10">
-                <img
-                  src={story.imageUrl}
-                  alt={story.title}
-                  width={1280}
-                  height={720}
-                  className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform"
-                  loading="lazy"
-                />
-              </div>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
-                  <span className="font-semibold text-spartan">{story.category}</span>
-                  <span className="opacity-60">•</span>
-                  <span>{story.date}</span>
+              <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
+                <div className="h-20 w-24 rounded-xl overflow-hidden">
+                  <img
+                    src={story.imageUrl}
+                    alt={story.title}
+                    width={1280}
+                    height={720}
+                    className="h-full w-full object-cover card-media"
+                    loading="lazy"
+                  />
                 </div>
-                <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
-                  {story.title}
-                </h3>
-                <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <span className="font-semibold text-spartan">{story.category}</span>
+                    <span className="opacity-60">•</span>
+                    <span>{story.date}</span>
+                  </div>
+                  <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                    {story.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                </div>
               </div>
             </a>
           ))}
@@ -179,7 +181,7 @@ export default function SkylineBeeArticlePage() {
       <div className="page-shell">
         <Header />
 
-        <div className="border-b border-spartan-soft bar-glass">
+        <div className="bar-glass">
           <div className="max-w-6xl mx-auto px-4 py-3">
             <Button asChild variant="ghost" className="px-0 text-base md:text-lg font-semibold">
               <a
@@ -196,7 +198,10 @@ export default function SkylineBeeArticlePage() {
 
         <article className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row md:items-start md:gap-10 lg:gap-12">
-            <div className="md:min-w-0 md:flex-1">
+            <div
+              className="md:min-w-0 md:flex-1"
+              style={{ viewTransitionName: `card-${article.slug}` } as React.CSSProperties}
+            >
               <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
                 {article.title}
               </h1>
@@ -205,7 +210,10 @@ export default function SkylineBeeArticlePage() {
                 <ArticleMeta article={article} />
               </div>
 
-              <div className="mt-4 rounded-2xl overflow-hidden border border-spartan-soft shadow-md shadow-spartan/10 max-w-3xl mx-auto">
+              <div
+                className="mt-4 rounded-2xl overflow-hidden surface-card article-hero max-w-3xl mx-auto"
+                style={{ viewTransitionName: `image-${article.slug}` } as React.CSSProperties}
+              >
                 <img
                   src={article.imageUrl}
                   alt={article.title}
