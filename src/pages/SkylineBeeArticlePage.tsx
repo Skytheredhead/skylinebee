@@ -119,28 +119,30 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
               key={story.slug}
               href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
               onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-              className="flex gap-3 group"
+              className="group block focus-ring-spartan rounded-2xl"
             >
-              <div className="h-24 w-28 rounded-lg overflow-hidden surface-card-muted">
-                <img
-                  src={story.imageUrl}
-                  alt={story.title}
-                  width={1280}
-                  height={720}
-                  className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform"
-                  loading="lazy"
-                />
-              </div>
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
-                  <span className="font-semibold text-spartan">{story.category}</span>
-                  <span className="opacity-60">•</span>
-                  <span>{story.date}</span>
+              <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
+                <div className="h-20 w-24 rounded-xl overflow-hidden">
+                  <img
+                    src={story.imageUrl}
+                    alt={story.title}
+                    width={1280}
+                    height={720}
+                    className="h-full w-full object-cover card-media"
+                    loading="lazy"
+                  />
                 </div>
-                <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
-                  {story.title}
-                </h3>
-                <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <span className="font-semibold text-spartan">{story.category}</span>
+                    <span className="opacity-60">•</span>
+                    <span>{story.date}</span>
+                  </div>
+                  <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                    {story.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                </div>
               </div>
             </a>
           ))}
