@@ -56,11 +56,11 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
     <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
             {/* Tagline removed per request */}
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
@@ -69,7 +69,7 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-9 border-0 surface-inset"
+              className="h-9 border-0 surface-input"
             />
           </div>
         </div>
@@ -121,6 +121,12 @@ function PostCard({ post }: { post: Post }) {
 }
 
 function Hero({ article }: { article: Post }) {
+  const headline = article.title.split("").map((char, index) => (
+    <span key={`${char}-${index}`} className="headline-letter" aria-hidden="true">
+      {char === " " ? "\u00A0" : char}
+    </span>
+  ));
+
   return (
     <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
       <div
@@ -132,14 +138,18 @@ function Hero({ article }: { article: Post }) {
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
         <div className="md:col-span-2 space-y-3">
           <Badge className="bg-spartan text-white shadow">Breaking</Badge>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            {article.title}
+          <h2
+            className="text-3xl md:text-4xl font-black tracking-tight headline-title"
+            aria-label={article.title}
+            role="text"
+          >
+            {headline}
           </h2>
           <p className="text-muted-foreground">
             {article.blurb}
           </p>
           <div className="flex gap-3 pt-1">
-            <Button asChild className="bg-spartan hover:bg-spartan-strong">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong button-animate">
               <a
                 href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
                 onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
@@ -147,7 +157,7 @@ function Hero({ article }: { article: Post }) {
                 Read the story
               </a>
             </Button>
-            <Button asChild variant="outline" className="glass-button">
+            <Button asChild variant="outline" className="glass-button button-animate">
               <a
                 href="https://forms.gle/udmDvnCaALBYcWwD6"
                 target="_blank"
@@ -158,7 +168,7 @@ function Hero({ article }: { article: Post }) {
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl surface-card p-5">
+        <div className="rounded-2xl surface-card p-5 float-hover">
           <div className="flex items-center gap-2 mb-3">
             <p className="text-sm font-semibold">What is this</p>
           </div>
@@ -175,7 +185,7 @@ function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
-        <div>
+        <div className="float-hover">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
@@ -186,13 +196,13 @@ function Footer() {
             Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
           </p>
         </div>
-        <div>
+        <div className="float-hover">
           <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
           <p className="text-sm text-muted-foreground">
             "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
-        <div>
+        <div className="float-hover">
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>

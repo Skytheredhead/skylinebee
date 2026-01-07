@@ -37,16 +37,16 @@ function Header() {
     <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             <Input
               placeholder="Search headlines"
-              className="h-9 border-0 surface-inset"
+              className="h-9 border-0 surface-input"
             />
           </div>
         </div>
@@ -59,7 +59,7 @@ function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white mt-10">
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
-        <div>
+        <div className="float-hover">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
@@ -70,13 +70,13 @@ function Footer() {
             Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
           </p>
         </div>
-        <div>
+        <div className="float-hover">
           <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
           <p className="text-sm text-muted-foreground">
             "All articles (might be) fictional satire created for a class project."
           </p>
         </div>
-        <div>
+        <div className="float-hover">
           <p className="text-sm font-semibold mb-2">Contact</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>

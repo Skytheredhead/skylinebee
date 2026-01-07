@@ -18,9 +18,13 @@ export function handleLinkClick(
   event.preventDefault();
   const startViewTransition = (document as Document & { startViewTransition?: (cb: () => void) => void })
     .startViewTransition;
-  if (startViewTransition) {
-    startViewTransition(() => navigateTo(href));
-  } else {
-    navigateTo(href);
+  try {
+    if (startViewTransition) {
+      startViewTransition(() => navigateTo(href));
+      return;
+    }
+  } catch (error) {
+    console.warn("View transition failed, falling back to direct navigation.", error);
   }
+  navigateTo(href);
 }
