@@ -110,10 +110,10 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
 
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0">
-      <div className="mt-0 md:mt-6">
+      <div className="mt-0 md:mt-6 rounded-2xl surface-card p-4">
         <p className="text-sm font-semibold mb-3">Trending Articles</p>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {trendingArticles.map((story) => (
             <a
               key={story.slug}
