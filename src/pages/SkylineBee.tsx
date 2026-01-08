@@ -96,7 +96,7 @@ function PostCard({ post }: { post: Post }) {
   const timestamp = formatTimestamp(post.date, post.slug);
   const readingTime = getReadingTime(post.body);
   const isOpinion = post.category === "Opinion";
-  const categoryClass = isOpinion ? "text-purple-700" : "text-spartan";
+  const categoryClass = isOpinion ? "text-neutral-600" : "text-spartan";
 
   return (
     <a href={href} onClick={(e) => handleLinkClick(e, href)} className="block focus-ring-spartan" aria-label={`Read ${post.title}`}>
@@ -116,7 +116,7 @@ function PostCard({ post }: { post: Post }) {
         <CardContent className="p-4">
           <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
             <span className={`font-semibold ${categoryClass}`}>
-              {isOpinion ? `Opinion ${"\u2726"}` : post.category}
+              {post.category}
             </span>
             <span className="opacity-60">•</span>
             <span>{timestamp}</span>
@@ -198,9 +198,6 @@ function Footer() {
             </div>
             <span className="font-bold text-neutral-900">The Skyline Bee</span>
           </div>
-          <p className="text-xs text-neutral-500">
-            Student-run satire desk covering campus life, culture, and everything in between.
-          </p>
         </div>
         <div>
           <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
