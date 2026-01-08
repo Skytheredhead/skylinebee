@@ -109,60 +109,63 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
     .slice(0, 4);
 
   return (
-    <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0">
-      <div className="mt-0 rounded-2xl surface-card p-4">
-        <p className="text-sm font-semibold mb-3">Trending Articles</p>
+    <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0 h-full">
+      <div className="flex flex-col h-full gap-4">
+        <div className="rounded-2xl surface-card p-4 flex-1">
+          <p className="text-sm font-semibold">Trending Articles</p>
+          <div className="h-px bg-black/80 my-3" />
 
-        <div className="space-y-3">
-          {trendingArticles.map((story) => (
-            <a
-              key={story.slug}
-              href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
-              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-              className="group block focus-ring-spartan rounded-2xl"
-            >
-              <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
-                <div className="h-20 w-24 rounded-xl overflow-hidden">
-                  <img
-                    src={story.imageUrl}
-                    alt={story.title}
-                    width={1280}
-                    height={720}
-                    className="h-full w-full object-cover card-media"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
-                    <span className="font-semibold text-spartan">{story.category}</span>
-                    <span className="opacity-60">•</span>
-                    <span>{story.date}</span>
+          <div className="space-y-3">
+            {trendingArticles.map((story) => (
+              <a
+                key={story.slug}
+                href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
+                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
+                className="group block focus-ring-spartan rounded-2xl"
+              >
+                <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
+                  <div className="h-20 w-24 rounded-xl overflow-hidden">
+                    <img
+                      src={story.imageUrl}
+                      alt={story.title}
+                      width={1280}
+                      height={720}
+                      className="h-full w-full object-cover card-media"
+                      loading="lazy"
+                    />
                   </div>
-                  <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
-                    {story.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
+                      <span className="font-semibold text-spartan">{story.category}</span>
+                      <span className="opacity-60">•</span>
+                      <span>{story.date}</span>
+                    </div>
+                    <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                      {story.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="mt-6">
-        <p className="text-sm font-semibold mb-2">Send us your ideas</p>
-        <p className="text-xs text-muted-foreground">
-          Have a headline that belongs here. Share it through{" "}
-          <a
-            href="https://forms.gle/udmDvnCaALBYcWwD6"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            this form
-          </a>{" "}
-          with your very best satire.
-        </p>
+        <div className="rounded-2xl surface-card p-4 flex-1">
+          <p className="text-sm font-semibold mb-2">Send us your ideas</p>
+          <p className="text-xs text-muted-foreground">
+            Have a headline that belongs here. Share it through{" "}
+            <a
+              href="https://forms.gle/udmDvnCaALBYcWwD6"
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              this form
+            </a>{" "}
+            with your very best satire.
+          </p>
+        </div>
       </div>
     </aside>
   );
@@ -197,16 +200,16 @@ export default function SkylineBeeArticlePage() {
         </div>
 
         <article className="max-w-6xl mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row md:items-start md:gap-10 lg:gap-12">
+          <div className="flex flex-col md:flex-row md:items-stretch md:gap-6 lg:gap-8">
             <div
-              className="md:min-w-0 md:flex-1 rounded-2xl surface-card p-6 md:p-7"
+              className="md:min-w-0 md:flex-1 rounded-2xl surface-card p-6 md:p-7 h-full"
               style={{ viewTransitionName: `card-${article.slug}` } as React.CSSProperties}
             >
               <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
                 {article.title}
               </h1>
 
-              <div className="mt-3">
+              <div className="mt-3 py-2">
                 <ArticleMeta article={article} />
               </div>
 
