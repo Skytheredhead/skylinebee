@@ -28,9 +28,9 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
   );
 }
 
-function AuthorBadge({ name }: { name: string }) {
+function AuthorBadge({ name, className = "" }: { name: string; className?: string }) {
   return (
-    <span className="inline-flex items-center gap-2 text-xs text-neutral-500">
+    <span className={`inline-flex items-center gap-2 text-xs text-neutral-500 ${className}`}>
       <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
         {getInitials(name)}
       </span>
@@ -95,6 +95,8 @@ function PostCard({ post }: { post: Post }) {
   const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
   const timestamp = formatTimestamp(post.date, post.slug);
   const readingTime = getReadingTime(post.body);
+  const isOpinion = post.category === "Opinion";
+  const categoryClass = isOpinion ? "text-purple-700" : "text-spartan";
 
   return (
     <a href={href} onClick={(e) => handleLinkClick(e, href)} className="block focus-ring-spartan" aria-label={`Read ${post.title}`}>
@@ -112,16 +114,18 @@ function PostCard({ post }: { post: Post }) {
           style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
         />
         <CardContent className="p-4">
-          <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
-            <span className="font-semibold text-spartan">{post.category}</span>
+          <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
+            <span className={`font-semibold ${categoryClass}`}>
+              {isOpinion ? `Opinion ${"\u2726"}` : post.category}
+            </span>
             <span className="opacity-60">•</span>
             <span>{timestamp}</span>
           </div>
-          <h3 className="mt-2 text-xl font-bold headline-font headline-tight">{post.title}</h3>
+          <h3 className="mt-2 text-xl font-extrabold headline-font headline-tight">{post.title}</h3>
           <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
-          <div className="flex items-center justify-between mt-4">
-            <AuthorBadge name={post.author} />
-            <span className="text-xs text-neutral-500">{readingTime}</span>
+          <div className="flex items-center justify-between mt-3">
+            <AuthorBadge name={post.author} className="text-[10px]" />
+            <span className="text-[10px] text-neutral-500">{readingTime}</span>
           </div>
         </CardContent>
       </Card>
@@ -135,14 +139,22 @@ function Hero({ article }: { article: Post }) {
 
   return (
     <section className="border-b border-neutral-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-center">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-start">
         <div className="md:col-span-3 space-y-3">
-          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">{article.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">
+            <a
+              href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
+              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
+              className="focus-ring-spartan"
+            >
+              {article.title}
+            </a>
+          </h2>
           <p className="text-sm md:text-base text-neutral-700">
             {article.blurb}
           </p>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
-            <AuthorBadge name={article.author} />
+          <div className="flex flex-wrap items-center gap-2 text-[11px] text-neutral-500">
+            <AuthorBadge name={article.author} className="text-[11px]" />
             <span>•</span>
             <span>{timestamp}</span>
             <span>•</span>
@@ -166,7 +178,7 @@ function Hero({ article }: { article: Post }) {
               alt={article.title}
               width={1280}
               height={720}
-              className="w-full h-52 md:h-60 object-cover"
+              className="w-full h-44 md:h-52 object-cover"
             />
           </div>
         </div>
