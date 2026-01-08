@@ -44,12 +44,10 @@ const NAV_ITEMS: Category[] = ["Campus", "Sports", "Opinion"];
 function Header({
   onSearch,
   query,
-  breakingTitle,
   activeCategory,
 }: {
   onSearch: (q: string) => void;
   query: string;
-  breakingTitle: string;
   activeCategory: Category;
 }) {
   return (
@@ -61,7 +59,6 @@ function Header({
           </div>
           <div className="flex flex-col">
             <h1 className="text-3xl font-black tracking-tight leading-6">The Skyline Bee</h1>
-            <span className="text-xs uppercase tracking-[0.18em] text-neutral-500">Campus & Culture</span>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             {/* Magnifying glass removed per request */}
@@ -74,7 +71,7 @@ function Header({
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-4 pb-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">
-          {NAV_ITEMS.map((item) => {
+          {["All", ...NAV_ITEMS].map((item) => {
             const href = `/?category=${encodeURIComponent(item)}`;
             const isActive = activeCategory === item;
             return (
@@ -88,11 +85,6 @@ function Header({
               </a>
             );
           })}
-        </div>
-      </div>
-      <div className="border-t border-neutral-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
-          <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
       </div>
     </header>
@@ -260,8 +252,6 @@ export default function SkylineBee() {
   const rest = featured ? filteredPosts.filter((post) => post.id !== featured.id) : filteredPosts;
   const secondary = rest.slice(0, 3);
   const remaining = rest.slice(3);
-  const breakingTitle = featured?.title ?? "Top stories";
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
@@ -292,7 +282,7 @@ export default function SkylineBee() {
   return (
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
-        <Header onSearch={setQuery} query={query} breakingTitle={breakingTitle} activeCategory={activeCategory} />
+        <Header onSearch={setQuery} query={query} activeCategory={activeCategory} />
         {featured && <Hero article={featured} />}
 
         {secondary.length > 0 && (
