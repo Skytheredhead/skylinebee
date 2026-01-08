@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
+import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -33,22 +32,46 @@ const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
 );
 
 function Header() {
+  const dailyFeatured = getDailyShuffle(ARTICLES)[0];
+  const breakingTitle = dailyFeatured?.title ?? "Top stories";
+
   return (
     <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
+          <div className="h-12 w-12 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
+            <h1 className="text-3xl font-black tracking-tight leading-6 logo-animate">The Skyline Bee</h1>
+            <span className="text-xs uppercase tracking-[0.18em] text-neutral-500">Campus & Culture</span>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             <Input
               placeholder="Search headlines"
-              className="h-9 border-0 surface-input"
+              className="h-8 text-xs border-0 surface-input max-w-[190px] ml-auto"
             />
           </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4 pb-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">
+          {["Campus", "Sports", "Opinion"].map((item) => {
+            const href = `/?category=${encodeURIComponent(item)}`;
+            return (
+              <a
+                key={item}
+                href={href}
+                onClick={(e) => handleLinkClick(e, href)}
+                className="transition-colors hover:text-spartan"
+              >
+                {item}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+      <div className="border-t border-spartan-soft bg-white/80">
+        <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
+          <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
       </div>
     </header>
@@ -58,32 +81,51 @@ function Header() {
 function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white mt-10">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
-        <div>
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6 text-sm text-neutral-600">
+        <div className="space-y-3">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
             </div>
-            <span className="font-bold">The Skyline Bee</span>
+            <span className="font-bold text-neutral-900">The Skyline Bee</span>
           </div>
-          <p className="text-xs text-muted-foreground mt-3">
-            Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
+          <p className="text-xs text-neutral-500">
+            Student-run satire desk covering campus life, culture, and everything in between.
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
-          <p className="text-sm text-muted-foreground">
-            "All articles (might be) fictional satire created for a class project."
+          <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
+          <p className="text-xs text-neutral-500">
+            This site is a class project showcasing fictional satire and parody coverage.
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold mb-2">Contact</p>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+          <p className="text-sm font-semibold text-neutral-900 mb-2">Editorial Policy</p>
+          <p className="text-xs text-neutral-500">
+            Stories are satirical, not affiliated with Skyline High School or the Issaquah School District.
+          </p>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-neutral-900 mb-2">Contact & Tips</p>
+          <ul className="text-xs text-neutral-500 space-y-2">
+            <li><a className="text-spartan" href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li>
+              <a
+                className="text-spartan"
+                href="https://forms.gle/udmDvnCaALBYcWwD6"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Submit a tip
+              </a>
+            </li>
           </ul>
+          <p className="text-[11px] text-neutral-500 mt-3">
+            Disclaimer: all articles may be fictional satire created for a class project.
+          </p>
         </div>
       </div>
-      <div className="text-center text-xs text-muted-foreground pb-6">
+      <div className="text-center text-xs text-neutral-500 pb-6">
         © {new Date().getFullYear()} The Skyline Bee
       </div>
     </footer>
@@ -91,13 +133,21 @@ function Footer() {
 }
 
 function ArticleMeta({ article }: { article: Article }) {
+  const timestamp = formatTimestamp(article.date, article.slug);
+  const readingTime = getReadingTime(article.body);
   return (
-    <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-3">
-      <Badge className="bg-spartan text-white">{article.category}</Badge>
+    <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
+      <span className="text-spartan font-semibold uppercase tracking-wide">{article.category}</span>
       <span>•</span>
-      <span>{article.date}</span>
+      <span>{timestamp}</span>
       <span>•</span>
-      <span>By {article.author}</span>
+      <span>{readingTime}</span>
+      <span className="inline-flex items-center gap-2">
+        <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
+          {getInitials(article.author)}
+        </span>
+        By {article.author}
+      </span>
     </div>
   );
 }
@@ -116,14 +166,17 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
           <div className="h-px bg-black/80 my-3" />
 
           <div className="space-y-3">
-            {trendingArticles.map((story) => (
-              <a
-                key={story.slug}
-                href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
-                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-                className="group block focus-ring-spartan rounded-2xl"
-              >
-                <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
+          {trendingArticles.map((story) => {
+            const timestamp = formatTimestamp(story.date, story.slug);
+            const readingTime = getReadingTime(story.body);
+            return (
+            <a
+              key={story.slug}
+              href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
+              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
+              className="group block focus-ring-spartan rounded-2xl"
+            >
+              <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
                   <div className="h-20 w-24 rounded-xl overflow-hidden">
                     <img
                       src={story.imageUrl}
@@ -135,25 +188,27 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
                     />
                   </div>
                   <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-muted-foreground">
-                      <span className="font-semibold text-spartan">{story.category}</span>
-                      <span className="opacity-60">•</span>
-                      <span>{story.date}</span>
-                    </div>
-                    <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
-                      {story.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">{story.blurb}</p>
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
+                    <span className="font-semibold text-spartan">{story.category}</span>
+                    <span className="opacity-60">•</span>
+                    <span>{timestamp}</span>
                   </div>
+                  <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                    {story.title}
+                  </h3>
+                  <p className="text-xs text-neutral-500">{story.blurb}</p>
+                  <span className="text-[11px] text-neutral-400">{readingTime}</span>
                 </div>
-              </a>
-            ))}
-          </div>
+              </div>
+            </a>
+          );
+          })}
+        </div>
         </div>
 
         <div className="rounded-2xl surface-card p-4 flex-1">
           <p className="text-sm font-semibold mb-2">Send us your ideas</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-neutral-500">
             Have a headline that belongs here. Share it through{" "}
             <a
               href="https://forms.gle/udmDvnCaALBYcWwD6"
@@ -205,7 +260,7 @@ export default function SkylineBeeArticlePage() {
               className="md:min-w-0 md:flex-1 rounded-2xl surface-card p-6 md:p-7 h-full"
               style={{ viewTransitionName: `card-${article.slug}` } as React.CSSProperties}
             >
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight leading-tight">
+              <h1 className="text-3xl md:text-4xl font-black headline-font headline-tight">
                 {article.title}
               </h1>
 

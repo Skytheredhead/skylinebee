@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
+import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -14,33 +14,10 @@ function Icon({ label, glyph, className = "" }: { label: string; glyph: string; 
   );
 }
 const BeeIcon = (p: { className?: string }) => <Icon label="bee" glyph="🐝" className={p.className} />;
-const ChevronRightIcon = ({ className = "" }: { className?: string }) => (
-  <svg
-    aria-hidden
-    focusable="false"
-    className={className}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M9 18l6-6-6-6" />
-  </svg>
-);
 
 type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
 type Post = Article;
-
-function pickDailyHero(posts: Post[]): Post {
-  const todayKey = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD in local time
-  const hash = Array.from(todayKey).reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 2147483647, 0);
-  const index = posts.length > 0 ? hash % posts.length : 0;
-  return posts[index] ?? posts[0];
-}
 
 // --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
@@ -51,17 +28,40 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
   );
 }
 
-function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
+function AuthorBadge({ name }: { name: string }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-xs text-neutral-500">
+      <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
+        {getInitials(name)}
+      </span>
+      By {name}
+    </span>
+  );
+}
+
+const NAV_ITEMS: Category[] = ["Campus", "Sports", "Opinion"];
+
+function Header({
+  onSearch,
+  query,
+  breakingTitle,
+  activeCategory,
+}: {
+  onSearch: (q: string) => void;
+  query: string;
+  breakingTitle: string;
+  activeCategory: Category;
+}) {
   return (
     <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
+          <div className="h-12 w-12 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
-            {/* Tagline removed per request */}
+            <h1 className="text-3xl font-black tracking-tight leading-6 logo-animate">The Skyline Bee</h1>
+            <span className="text-xs uppercase tracking-[0.18em] text-neutral-500">Campus & Culture</span>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             {/* Magnifying glass removed per request */}
@@ -69,9 +69,30 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-9 border-0 surface-input"
+              className="h-8 text-xs border-0 surface-input max-w-[190px] ml-auto"
             />
           </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4 pb-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">
+          {NAV_ITEMS.map((item) => {
+            const href = `/?category=${encodeURIComponent(item)}`;
+            const isActive = activeCategory === item;
+            return (
+              <a
+                key={item}
+                href={href}
+                onClick={(e) => handleLinkClick(e, href)}
+                className={`transition-colors ${isActive ? "text-spartan" : "hover:text-spartan"}`}
+              >
+                {item}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+      <div className="border-t border-spartan-soft bg-white/80">
+        <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
+          <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
       </div>
     </header>
@@ -80,6 +101,8 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
 
 function PostCard({ post }: { post: Post }) {
   const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+  const timestamp = formatTimestamp(post.date, post.slug);
+  const readingTime = getReadingTime(post.body);
 
   return (
     <a
@@ -97,22 +120,23 @@ function PostCard({ post }: { post: Post }) {
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full aspect-[16/9] md:aspect-[4/3] object-cover card-media"
+          className="w-full h-40 md:h-44 object-cover card-media"
           loading="lazy"
           style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
         />
-        <CardContent className="p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge className="bg-spartan text-white">{post.category}</Badge>
-            <span className="text-xs text-muted-foreground">{post.date}</span>
+        <CardContent className="p-4">
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
+            <span className="font-semibold text-spartan">{post.category}</span>
+            <span className="opacity-60">•</span>
+            <span>{timestamp}</span>
           </div>
-          <h3 className="text-xl font-bold leading-snug group-hover:text-spartan transition-colors">{post.title}</h3>
-          <p className="text-sm text-muted-foreground mt-2">{post.blurb}</p>
-        <div className="flex items-center justify-between mt-4">
-          <span className="text-xs text-muted-foreground">By {post.author}</span>
-          <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-spartan-soft text-spartan">
-            <ChevronRightIcon className="h-4 w-4" />
-          </span>
+          <h3 className="mt-2 text-xl font-bold headline-font headline-tight group-hover:text-spartan transition-colors">
+            {post.title}
+          </h3>
+          <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
+          <div className="flex items-center justify-between mt-4">
+            <AuthorBadge name={post.author} />
+            <span className="text-xs text-neutral-500">{readingTime}</span>
           </div>
         </CardContent>
       </Card>
@@ -121,6 +145,9 @@ function PostCard({ post }: { post: Post }) {
 }
 
 function Hero({ article }: { article: Post }) {
+  const timestamp = formatTimestamp(article.date, article.slug);
+  const readingTime = getReadingTime(article.body);
+
   return (
     <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
       <div
@@ -129,13 +156,19 @@ function Hero({ article }: { article: Post }) {
         style={{ backgroundImage: `url(${article.imageUrl})` }}
       />
       <div className="absolute inset-0 hero-tint" aria-hidden />
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
-        <div className="md:col-span-2 space-y-3">
-          <Badge className="bg-spartan text-white shadow">Breaking</Badge>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight">{article.title}</h2>
-          <p className="text-muted-foreground">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-center relative">
+        <div className="md:col-span-3 space-y-3">
+          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">{article.title}</h2>
+          <p className="text-sm md:text-base text-neutral-700">
             {article.blurb}
           </p>
+          <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
+            <AuthorBadge name={article.author} />
+            <span>•</span>
+            <span>{timestamp}</span>
+            <span>•</span>
+            <span>{readingTime}</span>
+          </div>
           <div className="flex gap-3 pt-1">
             <Button asChild className="bg-spartan hover:bg-spartan-strong button-animate">
               <a
@@ -145,24 +178,18 @@ function Hero({ article }: { article: Post }) {
                 Read the story
               </a>
             </Button>
-            <Button asChild variant="outline" className="glass-button button-animate">
-              <a
-                href="https://forms.gle/udmDvnCaALBYcWwD6"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Submit a Tip
-              </a>
-            </Button>
           </div>
         </div>
-        <div className="rounded-2xl surface-card p-5 float-hover">
-          <div className="flex items-center gap-2 mb-3">
-            <p className="text-sm font-semibold">What is this</p>
+        <div className="md:col-span-2">
+          <div className="rounded-2xl overflow-hidden surface-card">
+            <img
+              src={article.imageUrl}
+              alt={article.title}
+              width={1280}
+              height={720}
+              className="w-full h-52 md:h-60 object-cover"
+            />
           </div>
-          <p className="text-sm text-muted-foreground">
-            "All articles (might be) fictional satire created for a class project."
-          </p>
         </div>
       </div>
     </section>
@@ -172,43 +199,81 @@ function Hero({ article }: { article: Post }) {
 function Footer() {
   return (
     <footer className="border-t border-spartan-soft bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
-        <div>
+      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6 text-sm text-neutral-600">
+        <div className="space-y-3">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-full bg-spartan text-white grid place-items-center">
               <BeeIcon className="text-base" />
             </div>
-            <span className="font-bold">The Skyline Bee</span>
+            <span className="font-bold text-neutral-900">The Skyline Bee</span>
           </div>
-          <p className="text-xs text-muted-foreground mt-3">
-            Parody publication. Not affiliated with Skyline High School, Issaquah School District, or any official organization. For entertainment only.
+          <p className="text-xs text-neutral-500">
+            Student-run satire desk covering campus life, culture, and everything in between.
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold mb-2">About The Skyline Bee</p>
-          <p className="text-sm text-muted-foreground">
-            "All articles (might be) fictional satire created for a class project."
+          <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
+          <p className="text-xs text-neutral-500">
+            This site is a class project showcasing fictional satire and parody coverage.
           </p>
         </div>
         <div>
-          <p className="text-sm font-semibold mb-2">Contact</p>
-          <ul className="text-sm text-muted-foreground space-y-1">
-            <li><a href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+          <p className="text-sm font-semibold text-neutral-900 mb-2">Editorial Policy</p>
+          <p className="text-xs text-neutral-500">
+            Stories are satirical, not affiliated with Skyline High School or the Issaquah School District.
+          </p>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-neutral-900 mb-2">Contact & Tips</p>
+          <ul className="text-xs text-neutral-500 space-y-2">
+            <li><a className="text-spartan" href="mailto:sussystudent26@gmail.com">sussystudent26@gmail.com</a></li>
+            <li>
+              <a
+                className="text-spartan"
+                href="https://forms.gle/udmDvnCaALBYcWwD6"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Submit a tip
+              </a>
+            </li>
           </ul>
+          <p className="text-[11px] text-neutral-500 mt-3">
+            Disclaimer: all articles may be fictional satire created for a class project.
+          </p>
         </div>
       </div>
-      <div className="text-center text-xs text-muted-foreground pb-6">© {new Date().getFullYear()} The Skyline Bee</div>
+      <div className="text-center text-xs text-neutral-500 pb-6">© {new Date().getFullYear()} The Skyline Bee</div>
     </footer>
   );
 }
 
 export type { Category, Post };
 
+function normalizeCategory(category: string | null): Category {
+  const value = category?.toLowerCase();
+  if (value === "campus") return "Campus";
+  if (value === "sports") return "Sports";
+  if (value === "opinion") return "Opinion";
+  if (value === "tech") return "Tech";
+  return "All";
+}
+
 export default function SkylineBee() {
   const [query, setQuery] = useState("");
+  const url = new URL(window.location.href);
+  const activeCategory = normalizeCategory(url.searchParams.get("category"));
 
-  const posts = useMemo(() => filterPosts(ARTICLES, "All", query), [query]);
-  const heroArticle = useMemo(() => pickDailyHero(ARTICLES), []);
+  const dailyPosts = useMemo(() => getDailyShuffle(ARTICLES), []);
+  const featured = dailyPosts[0];
+  const filteredPosts = useMemo(
+    () => filterPosts(dailyPosts, activeCategory, query),
+    [dailyPosts, activeCategory, query],
+  );
+  const rest = featured ? filteredPosts.filter((post) => post.id !== featured.id) : filteredPosts;
+  const secondary = rest.slice(0, 3);
+  const remaining = rest.slice(3);
+  const breakingTitle = featured?.title ?? "Top stories";
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -240,32 +305,24 @@ export default function SkylineBee() {
   return (
     <main className="page-aurora text-neutral-900 fade-in">
       <div className="page-shell">
-        <Header onSearch={setQuery} query={query} />
-        <Hero article={heroArticle} />
+        <Header onSearch={setQuery} query={query} breakingTitle={breakingTitle} activeCategory={activeCategory} />
+        {featured && <Hero article={featured} />}
 
-        <section className="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </section>
+        {secondary.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {secondary.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </section>
+        )}
 
-        <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="rounded-2xl bg-spartan-deep text-white backdrop-blur p-6 shadow-lg">
-            <h3 className="font-bold text-lg">Submit a headline</h3>
-            <p className="text-sm text-white-soft mt-1">
-              Send ideas, tips, or fully written satire through{" "}
-              <a
-                className="underline"
-                href="https://forms.gle/udmDvnCaALBYcWwD6"
-                target="_blank"
-                rel="noreferrer"
-              >
-                this form
-              </a>
-              .
-            </p>
-          </div>
-        </section>
+        {remaining.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 pb-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {remaining.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </section>
+        )}
 
         <Footer />
       </div>
