@@ -75,7 +75,7 @@ export const ARTICLES: Article[] = [
     id: 7,
     slug: "club-attendance-drops-after-fair",
     title: "Club attendance drops to executive board only after club fair",
-    blurb: "Who even has time for clubs",
+    blurb: "Attendance is lower than the sign-up sheet",
     category: "Campus",
     author: "Skylar Enns",
     date: "Jan 5, 2026",
@@ -89,7 +89,7 @@ export const ARTICLES: Article[] = [
   {
     id: 6,
     slug: "flagpole-sptv-intro",
-    title: "Skyline student licks flagpole for 30 minutes during lunch??",
+    title: "Skyline student licks flagpole for 30 minutes during lunch",
     blurb: "These kids are crazy",
     category: "Campus",
     author: "Skylar Enns",
