@@ -53,14 +53,14 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 
 function Header({ onSearch, query }: { onSearch: (q: string) => void; query: string }) {
   return (
-    <header className="sticky top-0 z-20 header-glass shadow-sm border-b border-spartan-soft">
+    <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow">
+          <div className="h-10 w-10 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl font-black tracking-tight leading-5">The Skyline Bee</h1>
+            <h1 className="text-2xl font-black tracking-tight leading-5 logo-animate">The Skyline Bee</h1>
             {/* Tagline removed per request */}
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
@@ -69,7 +69,7 @@ function Header({ onSearch, query }: { onSearch: (q: string) => void; query: str
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-9"
+              className="h-9 border-0 surface-input"
             />
           </div>
         </div>
@@ -85,17 +85,21 @@ function PostCard({ post }: { post: Post }) {
     <a
       href={href}
       onClick={(e) => handleLinkClick(e, href)}
-      className="block group focus-ring-spartan rounded-2xl"
+      className="block group focus-ring-spartan rounded-2xl active:scale-[0.99] transition-transform"
       aria-label={`Read ${post.title}`}
     >
-      <Card className="hover:shadow-lg transition border border-spartan-soft overflow-hidden">
+      <Card
+        className="glass-card-soft card-animate border-0 overflow-hidden"
+        style={{ viewTransitionName: `card-${post.slug}` } as React.CSSProperties}
+      >
         <img
           src={post.imageUrl}
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full h-48 md:h-56 object-cover"
+          className="w-full aspect-[16/9] md:aspect-[4/3] object-cover card-media"
           loading="lazy"
+          style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
         />
         <CardContent className="p-5">
           <div className="flex items-center gap-2 mb-2">
@@ -128,14 +132,12 @@ function Hero({ article }: { article: Post }) {
       <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6 items-center relative">
         <div className="md:col-span-2 space-y-3">
           <Badge className="bg-spartan text-white shadow">Breaking</Badge>
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight">
-            {article.title}
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight">{article.title}</h2>
           <p className="text-muted-foreground">
             {article.blurb}
           </p>
           <div className="flex gap-3 pt-1">
-            <Button asChild className="bg-spartan hover:bg-spartan-strong">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong button-animate">
               <a
                 href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
                 onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
@@ -143,7 +145,7 @@ function Hero({ article }: { article: Post }) {
                 Read the story
               </a>
             </Button>
-            <Button asChild variant="outline" className="glass-button">
+            <Button asChild variant="outline" className="glass-button button-animate">
               <a
                 href="https://forms.gle/udmDvnCaALBYcWwD6"
                 target="_blank"
@@ -154,7 +156,7 @@ function Hero({ article }: { article: Post }) {
             </Button>
           </div>
         </div>
-        <div className="rounded-2xl glass-card p-5 shadow-sm">
+        <div className="rounded-2xl surface-card p-5 float-hover">
           <div className="flex items-center gap-2 mb-3">
             <p className="text-sm font-semibold">What is this</p>
           </div>
@@ -248,7 +250,7 @@ export default function SkylineBee() {
         </section>
 
         <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="rounded-2xl border border-spartan-soft bg-spartan-deep text-white backdrop-blur p-6 shadow-sm">
+          <div className="rounded-2xl bg-spartan-deep text-white backdrop-blur p-6 shadow-lg">
             <h3 className="font-bold text-lg">Submit a headline</h3>
             <p className="text-sm text-white-soft mt-1">
               Send ideas, tips, or fully written satire through{" "}
