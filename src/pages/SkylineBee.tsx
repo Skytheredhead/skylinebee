@@ -56,11 +56,11 @@ function Header({
     <header className="sticky top-0 z-20 header-glass">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center gap-3 py-3">
-          <div className="h-12 w-12 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
+          <div className="h-12 w-12 rounded bg-spartan text-white grid place-items-center">
             <BeeIcon className="text-lg" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-3xl font-black tracking-tight leading-6 logo-animate">The Skyline Bee</h1>
+            <h1 className="text-3xl font-black tracking-tight leading-6">The Skyline Bee</h1>
             <span className="text-xs uppercase tracking-[0.18em] text-neutral-500">Campus & Culture</span>
           </div>
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
@@ -69,7 +69,7 @@ function Header({
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-8 text-xs border-0 surface-input max-w-[190px] ml-auto"
+              className="h-8 text-xs border border-neutral-300 bg-white max-w-[190px] ml-auto"
             />
           </div>
         </div>
@@ -82,7 +82,7 @@ function Header({
                 key={item}
                 href={href}
                 onClick={(e) => handleLinkClick(e, href)}
-                className={`transition-colors ${isActive ? "text-spartan" : "hover:text-spartan"}`}
+                className={`${isActive ? "text-spartan" : "text-neutral-600"}`}
               >
                 {item}
               </a>
@@ -90,7 +90,7 @@ function Header({
           })}
         </div>
       </div>
-      <div className="border-t border-spartan-soft bg-white/80">
+      <div className="border-t border-neutral-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
           <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
@@ -105,14 +105,9 @@ function PostCard({ post }: { post: Post }) {
   const readingTime = getReadingTime(post.body);
 
   return (
-    <a
-      href={href}
-      onClick={(e) => handleLinkClick(e, href)}
-      className="block group focus-ring-spartan rounded-2xl active:scale-[0.99] transition-transform"
-      aria-label={`Read ${post.title}`}
-    >
+    <a href={href} onClick={(e) => handleLinkClick(e, href)} className="block focus-ring-spartan" aria-label={`Read ${post.title}`}>
       <Card
-        className="glass-card-soft card-animate border-0 overflow-hidden"
+        className="glass-card-soft border border-neutral-200 overflow-hidden rounded-none"
         style={{ viewTransitionName: `card-${post.slug}` } as React.CSSProperties}
       >
         <img
@@ -120,7 +115,7 @@ function PostCard({ post }: { post: Post }) {
           alt={post.title}
           width={1280}
           height={720}
-          className="w-full h-40 md:h-44 object-cover card-media"
+          className="w-full h-40 md:h-44 object-cover"
           loading="lazy"
           style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
         />
@@ -130,9 +125,7 @@ function PostCard({ post }: { post: Post }) {
             <span className="opacity-60">•</span>
             <span>{timestamp}</span>
           </div>
-          <h3 className="mt-2 text-xl font-bold headline-font headline-tight group-hover:text-spartan transition-colors">
-            {post.title}
-          </h3>
+          <h3 className="mt-2 text-xl font-bold headline-font headline-tight">{post.title}</h3>
           <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
           <div className="flex items-center justify-between mt-4">
             <AuthorBadge name={post.author} />
@@ -149,14 +142,8 @@ function Hero({ article }: { article: Post }) {
   const readingTime = getReadingTime(article.body);
 
   return (
-    <section className="relative overflow-hidden border-b border-spartan-soft bg-skyline-cool">
-      <div
-        className="absolute inset-0 hero-backdrop"
-        aria-hidden
-        style={{ backgroundImage: `url(${article.imageUrl})` }}
-      />
-      <div className="absolute inset-0 hero-tint" aria-hidden />
-      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-center relative">
+    <section className="border-b border-neutral-200 bg-white">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-center">
         <div className="md:col-span-3 space-y-3">
           <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">{article.title}</h2>
           <p className="text-sm md:text-base text-neutral-700">
@@ -170,7 +157,7 @@ function Hero({ article }: { article: Post }) {
             <span>{readingTime}</span>
           </div>
           <div className="flex gap-3 pt-1">
-            <Button asChild className="bg-spartan hover:bg-spartan-strong button-animate">
+            <Button asChild className="bg-spartan hover:bg-spartan-strong">
               <a
                 href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
                 onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
@@ -181,7 +168,7 @@ function Hero({ article }: { article: Post }) {
           </div>
         </div>
         <div className="md:col-span-2">
-          <div className="rounded-2xl overflow-hidden surface-card">
+          <div className="border border-neutral-200 overflow-hidden">
             <img
               src={article.imageUrl}
               alt={article.title}
@@ -303,7 +290,7 @@ export default function SkylineBee() {
   }, []);
 
   return (
-    <main className="page-aurora text-neutral-900 fade-in">
+    <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} breakingTitle={breakingTitle} activeCategory={activeCategory} />
         {featured && <Hero article={featured} />}
