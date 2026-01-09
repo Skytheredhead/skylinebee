@@ -1,10 +1,7 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
-import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -25,17 +22,6 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
   return posts.filter((p) =>
     (active === "All" || p.category === active) &&
     (q.length === 0 || p.title.toLowerCase().includes(q) || p.blurb.toLowerCase().includes(q))
-  );
-}
-
-function AuthorBadge({ name, className = "" }: { name: string; className?: string }) {
-  return (
-    <span className={`inline-flex items-center gap-2 text-xs text-neutral-500 ${className}`}>
-      <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
-        {getInitials(name)}
-      </span>
-      By {name}
-    </span>
   );
 }
 
@@ -91,101 +77,6 @@ function Header({
   );
 }
 
-function PostCard({ post }: { post: Post }) {
-  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
-  const timestamp = formatTimestamp(post.date, post.slug);
-  const readingTime = getReadingTime(post.body);
-  const isOpinion = post.category === "Opinion";
-  const categoryClass = isOpinion ? "text-neutral-600" : "text-spartan";
-
-  return (
-    <a href={href} onClick={(e) => handleLinkClick(e, href)} className="block focus-ring-spartan" aria-label={`Read ${post.title}`}>
-      <Card
-        className="glass-card-soft border border-neutral-200 overflow-hidden rounded-none"
-        style={{ viewTransitionName: `card-${post.slug}` } as React.CSSProperties}
-      >
-        <img
-          src={post.imageUrl}
-          alt={post.title}
-          width={1280}
-          height={720}
-          className="w-full h-40 md:h-44 object-cover"
-          loading="lazy"
-          style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
-        />
-        <CardContent className="p-4">
-          <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
-            <span className={`font-semibold ${categoryClass}`}>
-              {post.category}
-            </span>
-            <span className="opacity-60">•</span>
-            <span>{timestamp}</span>
-          </div>
-          <h3 className="mt-2 text-xl font-extrabold headline-font headline-tight">{post.title}</h3>
-          <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
-          <div className="flex items-center justify-between mt-3">
-            <AuthorBadge name={post.author} className="text-[10px]" />
-            <span className="text-[10px] text-neutral-500">{readingTime}</span>
-          </div>
-        </CardContent>
-      </Card>
-    </a>
-  );
-}
-
-function Hero({ article }: { article: Post }) {
-  const timestamp = formatTimestamp(article.date, article.slug);
-  const readingTime = getReadingTime(article.body);
-
-  return (
-    <section className="border-b border-neutral-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-start">
-        <div className="md:col-span-3 space-y-3">
-          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">
-            <a
-              href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
-              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
-              className="focus-ring-spartan"
-            >
-              {article.title}
-            </a>
-          </h2>
-          <p className="text-sm md:text-base text-neutral-700">
-            {article.blurb}
-          </p>
-          <div className="flex flex-wrap items-center gap-2 text-[11px] text-neutral-500">
-            <AuthorBadge name={article.author} className="text-[11px]" />
-            <span>•</span>
-            <span>{timestamp}</span>
-            <span>•</span>
-            <span>{readingTime}</span>
-          </div>
-          <div className="flex gap-3 pt-1">
-            <Button asChild className="bg-spartan hover:bg-spartan-strong">
-              <a
-                href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
-                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
-              >
-                Read the story
-              </a>
-            </Button>
-          </div>
-        </div>
-        <div className="md:col-span-2">
-          <div className="border border-neutral-200 overflow-hidden">
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              width={1280}
-              height={720}
-              className="w-full h-44 md:h-52 object-cover"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Footer() {
   return (
@@ -251,16 +142,6 @@ export default function SkylineBee() {
   const [query, setQuery] = useState("");
   const url = new URL(window.location.href);
   const activeCategory = normalizeCategory(url.searchParams.get("category"));
-
-  const dailyPosts = useMemo(() => getDailyShuffle(ARTICLES), []);
-  const featured = dailyPosts[0];
-  const filteredPosts = useMemo(
-    () => filterPosts(dailyPosts, activeCategory, query),
-    [dailyPosts, activeCategory, query],
-  );
-  const rest = featured ? filteredPosts.filter((post) => post.id !== featured.id) : filteredPosts;
-  const secondary = rest.slice(0, 3);
-  const remaining = rest.slice(3);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
@@ -292,24 +173,6 @@ export default function SkylineBee() {
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} activeCategory={activeCategory} />
-        {featured && <Hero article={featured} />}
-
-        {secondary.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {secondary.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </section>
-        )}
-
-        {remaining.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 pb-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {remaining.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </section>
-        )}
-
         <Footer />
       </div>
     </main>
