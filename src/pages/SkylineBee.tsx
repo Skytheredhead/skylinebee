@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
-import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
+import { formatTimestamp, getDailyShuffle, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -17,6 +17,16 @@ type Category = "All" | "Campus" | "Sports" | "Opinion" | "Tech";
 
 type Post = Article;
 
+const TAG_VARIANTS = ["Campus", "Opinion", "News", "Features", "Culture", "Arts"];
+
+function getTagVariant(text: string) {
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) % TAG_VARIANTS.length;
+  }
+  return TAG_VARIANTS[Math.abs(hash) % TAG_VARIANTS.length];
+}
+
 // --- Filtering logic factored for testing ---
 export function filterPosts(posts: Post[], active: Category, query: string): Post[] {
   const q = query.trim().toLowerCase();
@@ -29,9 +39,12 @@ export function filterPosts(posts: Post[], active: Category, query: string): Pos
 function AuthorBadge({ name, className = "" }: { name: string; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2 text-xs text-neutral-500 ${className}`}>
-      <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
-        {getInitials(name)}
-      </span>
+      <img
+        src="https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWmP4wHUEgCko7dPefO5RAUgEutsh3VFXNGjiY"
+        alt={name}
+        className="h-6 w-6 rounded-full object-cover border border-neutral-200"
+        loading="lazy"
+      />
       By {name}
     </span>
   );
@@ -63,10 +76,10 @@ function Header({
   return (
     <header className="sticky top-0 z-20 header-glass">
       <div className="border-b border-neutral-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 py-1 text-[11px] text-neutral-600 flex flex-wrap gap-4 items-center">
+        <div className="max-w-6xl mx-auto px-4 py-0.5 text-[10px] text-neutral-600 flex flex-wrap gap-4 items-center">
           <span className="font-semibold text-neutral-800">{editionDate}</span>
           <span className="uppercase tracking-[0.2em] text-neutral-500">Skyline High School</span>
-          <div className="ml-auto flex items-center gap-3 text-[11px]">
+          <div className="ml-auto flex items-center gap-3 text-[10px]">
             <a className="text-spartan" href="#subscribe">Subscribe</a>
             <a className="text-spartan" href="#newsletter">Newsletter</a>
             <a
@@ -125,32 +138,26 @@ function LatestList({ posts }: { posts: Post[] }) {
     <div className="border-t border-neutral-200 pt-4 mt-6 lg:mt-0 lg:pt-0 lg:border-t-0 lg:border-l lg:pl-6">
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Latest</p>
-        <span className="text-[11px] text-neutral-400">{posts.length} stories</span>
       </div>
       <div className="mt-4 space-y-4">
         {posts.map((post) => {
           const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
           const timestamp = formatTimestamp(post.date, post.slug);
-          const readingTime = getReadingTime(post.body);
+          const tagLabel = getTagVariant(post.slug);
           return (
             <a
               key={post.id}
               href={href}
               onClick={(e) => handleLinkClick(e, href)}
-              className="block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan"
+              className="news-link block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan latest-item"
             >
               <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
-                <span className="font-semibold text-spartan">{post.category}</span>
+                <span className="font-semibold text-spartan">{tagLabel}</span>
                 <span className="opacity-60">•</span>
                 <span>{timestamp}</span>
               </div>
               <h3 className="mt-1 text-sm font-semibold leading-snug text-neutral-900">{post.title}</h3>
-              <p className="text-xs text-neutral-600 mt-1">{post.blurb}</p>
-              <div className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500">
-                <AuthorBadge name={post.author} className="text-[10px]" />
-                <span>•</span>
-                <span>{readingTime}</span>
-              </div>
+              <p className="text-xs text-neutral-600 mt-1 latest-dek">{post.blurb}</p>
             </a>
           );
         })}
@@ -163,14 +170,15 @@ function Hero({ article, latest }: { article: Post; latest: Post[] }) {
   const timestamp = formatTimestamp(article.date, article.slug);
   const readingTime = getReadingTime(article.body);
   const photoCaption = `${article.category} coverage at Skyline High School.`;
+  const tagLabel = getTagVariant(article.slug);
 
   return (
     <section className="border-b border-neutral-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-4 md:py-6 grid lg:grid-cols-12 gap-6 items-start">
+      <div className="max-w-6xl mx-auto px-4 py-4 md:py-5 grid lg:grid-cols-12 gap-6 items-start">
         <a
           href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
           onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
-          className="lg:col-span-8 space-y-3 focus-ring-spartan group"
+          className="news-link lg:col-span-8 space-y-3 focus-ring-spartan group"
           aria-label={`Read ${article.title}`}
         >
           <div className="border border-neutral-200 overflow-hidden">
@@ -179,15 +187,20 @@ function Hero({ article, latest }: { article: Post; latest: Post[] }) {
               alt={article.title}
               width={1280}
               height={720}
-              className="w-full aspect-[16/9] object-cover"
+              className="w-full aspect-[16/9] object-cover max-h-72"
             />
           </div>
+          <p className="text-[11px] text-neutral-500">
+            <span className="font-semibold text-neutral-700">Caption:</span> {photoCaption}
+            <span className="mx-1">•</span>
+            <span className="font-semibold text-neutral-700">Credit:</span> Skyline Bee staff
+          </p>
           <div className="text-[10px] uppercase tracking-wide text-neutral-500">
-            <span className="font-semibold text-spartan">{article.category}</span>
+            <span className="font-semibold text-spartan">{tagLabel}</span>
             <span className="mx-1 opacity-60">•</span>
             <span>{timestamp}</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight group-hover:text-spartan transition-colors">
+          <h2 className="text-2xl md:text-3xl font-black headline-font headline-tight group-hover:text-spartan transition-colors">
             {article.title}
           </h2>
           <p className="text-sm md:text-base text-neutral-700">
@@ -198,11 +211,6 @@ function Hero({ article, latest }: { article: Post; latest: Post[] }) {
             <span>•</span>
             <span>{readingTime}</span>
           </div>
-          <p className="text-[11px] text-neutral-500">
-            <span className="font-semibold text-neutral-700">Caption:</span> {photoCaption}
-            <span className="mx-1">•</span>
-            <span className="font-semibold text-neutral-700">Credit:</span> Skyline Bee staff
-          </p>
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-spartan">Read more</span>
         </a>
         <div className="lg:col-span-4">
@@ -287,12 +295,13 @@ function LeadStory({ post }: { post: Post }) {
   const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
   const timestamp = formatTimestamp(post.date, post.slug);
   const readingTime = getReadingTime(post.body);
+  const tagLabel = getTagVariant(post.slug);
 
   return (
     <a
       href={href}
       onClick={(e) => handleLinkClick(e, href)}
-      className="block focus-ring-spartan"
+      className="news-link block focus-ring-spartan"
     >
       <div className="border border-neutral-200 overflow-hidden">
         <img
@@ -305,7 +314,7 @@ function LeadStory({ post }: { post: Post }) {
         />
       </div>
       <div className="mt-2 text-[10px] uppercase tracking-wide text-neutral-500">
-        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="font-semibold text-spartan">{tagLabel}</span>
         <span className="mx-1 opacity-60">•</span>
         <span>{timestamp}</span>
       </div>
@@ -324,12 +333,13 @@ function CompactCard({ post }: { post: Post }) {
   const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
   const timestamp = formatTimestamp(post.date, post.slug);
   const readingTime = getReadingTime(post.body);
+  const tagLabel = getTagVariant(post.slug);
 
   return (
     <a
       href={href}
       onClick={(e) => handleLinkClick(e, href)}
-      className="block border border-neutral-200 p-3 focus-ring-spartan"
+      className="news-link block border border-neutral-200 p-3 focus-ring-spartan"
     >
       <div className="overflow-hidden border border-neutral-200">
         <img
@@ -342,7 +352,7 @@ function CompactCard({ post }: { post: Post }) {
         />
       </div>
       <div className="mt-2 text-[10px] uppercase tracking-wide text-neutral-500">
-        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="font-semibold text-spartan">{tagLabel}</span>
         <span className="mx-1 opacity-60">•</span>
         <span>{timestamp}</span>
       </div>
@@ -361,15 +371,16 @@ function ListStory({ post }: { post: Post }) {
   const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
   const timestamp = formatTimestamp(post.date, post.slug);
   const readingTime = getReadingTime(post.body);
+  const tagLabel = getTagVariant(post.slug);
 
   return (
     <a
       href={href}
       onClick={(e) => handleLinkClick(e, href)}
-      className="block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan"
+      className="news-link block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan"
     >
       <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
-        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="font-semibold text-spartan">{tagLabel}</span>
         <span className="opacity-60">•</span>
         <span>{timestamp}</span>
       </div>
@@ -388,7 +399,7 @@ function CategorySection({ title, posts }: { title: string; posts: Post[] }) {
   if (posts.length === 0) return null;
   const [lead, ...rest] = posts;
   const cardPosts = rest.slice(0, 2);
-  const listPosts = rest.slice(2, 6);
+  const listPosts = rest.slice(2, 7);
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-8 border-t border-neutral-200">
@@ -414,6 +425,38 @@ function CategorySection({ title, posts }: { title: string; posts: Post[] }) {
   );
 }
 
+function TopStoryCard({ post }: { post: Post }) {
+  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+  const timestamp = formatTimestamp(post.date, post.slug);
+  const tagLabel = getTagVariant(post.slug);
+
+  return (
+    <a
+      href={href}
+      onClick={(e) => handleLinkClick(e, href)}
+      className="news-link block border border-neutral-200 p-3 focus-ring-spartan"
+    >
+      <div className="overflow-hidden border border-neutral-200">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          width={1280}
+          height={720}
+          className="w-full aspect-[16/9] object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="mt-2 text-[10px] uppercase tracking-wide text-neutral-500">
+        <span className="font-semibold text-spartan">{tagLabel}</span>
+        <span className="mx-1 opacity-60">•</span>
+        <span>{timestamp}</span>
+      </div>
+      <h4 className="mt-2 text-base font-semibold leading-snug">{post.title}</h4>
+      <p className="text-xs text-neutral-600 mt-2">{post.blurb}</p>
+    </a>
+  );
+}
+
 export default function SkylineBee() {
   const [query, setQuery] = useState("");
   const url = new URL(window.location.href);
@@ -432,11 +475,37 @@ export default function SkylineBee() {
     [dailyPosts, activeCategory, query],
   );
   const rest = featured ? filteredPosts.filter((post) => post.id !== featured.id) : filteredPosts;
-  const latestColumn = latestPosts.filter((post) => post.id !== featured?.id).slice(0, 5);
-  const trendingPosts = latestPosts.slice(0, 3);
-  const campusPosts = rest.filter((post) => post.category === "Campus");
-  const sportsPosts = rest.filter((post) => post.category === "Sports");
-  const opinionPosts = rest.filter((post) => post.category === "Opinion");
+  const filteredSet = new Set(filteredPosts.map((post) => post.id));
+  const modulePool = latestPosts.filter((post) => filteredSet.has(post.id));
+  const usedIds = new Set<number>();
+
+  if (featured) {
+    usedIds.add(featured.id);
+  }
+
+  const takeUnique = (posts: Post[], count: number) => {
+    const selected: Post[] = [];
+    posts.forEach((post) => {
+      if (selected.length >= count) return;
+      if (!usedIds.has(post.id)) {
+        usedIds.add(post.id);
+        selected.push(post);
+      }
+    });
+    return selected;
+  };
+
+  const breakingStory = modulePool.find((post) => !usedIds.has(post.id)) ?? null;
+  if (breakingStory) {
+    usedIds.add(breakingStory.id);
+  }
+
+  const latestColumn = takeUnique(modulePool, 5);
+  const topStories = takeUnique(modulePool, 4);
+  const trendingPosts = takeUnique(modulePool, 3);
+  const campusPosts = takeUnique(rest.filter((post) => post.category === "Campus"), 8);
+  const sportsPosts = takeUnique(rest.filter((post) => post.category === "Sports"), 8);
+  const opinionPosts = takeUnique(rest.filter((post) => post.category === "Opinion"), 8);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
@@ -468,7 +537,35 @@ export default function SkylineBee() {
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} activeCategory={activeCategory} />
+        {breakingStory && (
+          <div className="border-b border-neutral-200 bg-white">
+            <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
+              <span className="font-semibold text-spartan">Breaking:</span>{" "}
+              <a
+                href={`/?page=article&slug=${encodeURIComponent(breakingStory.slug)}`}
+                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(breakingStory.slug)}`)}
+                className="news-link"
+              >
+                {breakingStory.title}
+              </a>
+            </div>
+          </div>
+        )}
         {featured && <Hero article={featured} latest={latestColumn} />}
+
+        {topStories.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700">Top stories</h3>
+              <span className="text-[11px] text-neutral-400">Editor&apos;s picks</span>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {topStories.map((post) => (
+                <TopStoryCard key={post.id} post={post} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {trendingPosts.length > 0 && (
           <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
@@ -480,15 +577,16 @@ export default function SkylineBee() {
               {trendingPosts.map((post) => {
                 const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
                 const timestamp = formatTimestamp(post.date, post.slug);
+                const tagLabel = getTagVariant(post.slug);
                 return (
                   <a
                     key={post.id}
                     href={href}
                     onClick={(e) => handleLinkClick(e, href)}
-                    className="block border border-neutral-200 p-3 focus-ring-spartan"
+                    className="news-link block border border-neutral-200 p-3 focus-ring-spartan"
                   >
                     <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
-                      <span className="font-semibold text-spartan">{post.category}</span>
+                      <span className="font-semibold text-spartan">{tagLabel}</span>
                       <span className="opacity-60">•</span>
                       <span>{timestamp}</span>
                     </div>

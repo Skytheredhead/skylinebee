@@ -207,6 +207,27 @@ body {
   filter: none;
 }
 
+.news-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
+.news-link:visited {
+  color: #4b5563;
+}
+
+.latest-dek {
+  display: none;
+}
+
+.latest-item:hover .latest-dek {
+  display: block;
+}
+
 .float-hover {
   transition: none;
 }

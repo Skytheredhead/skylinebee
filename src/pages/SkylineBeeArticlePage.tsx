@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
-import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
+import { formatTimestamp, getDailyShuffle, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -31,6 +31,16 @@ const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
+const TAG_VARIANTS = ["Campus", "Opinion", "News", "Features", "Culture", "Arts"];
+
+function getTagVariant(text: string) {
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) % TAG_VARIANTS.length;
+  }
+  return TAG_VARIANTS[Math.abs(hash) % TAG_VARIANTS.length];
+}
+
 function Header() {
   const dailyFeatured = getDailyShuffle(ARTICLES)[0];
   const breakingTitle = dailyFeatured?.title ?? "Top stories";
@@ -44,10 +54,10 @@ function Header() {
   return (
     <header className="sticky top-0 z-20 header-glass">
       <div className="border-b border-neutral-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 py-1 text-[11px] text-neutral-600 flex flex-wrap gap-4 items-center">
+        <div className="max-w-6xl mx-auto px-4 py-0.5 text-[10px] text-neutral-600 flex flex-wrap gap-4 items-center">
           <span className="font-semibold text-neutral-800">{editionDate}</span>
           <span className="uppercase tracking-[0.2em] text-neutral-500">Skyline High School</span>
-          <div className="ml-auto flex items-center gap-3 text-[11px]">
+          <div className="ml-auto flex items-center gap-3 text-[10px]">
             <a className="text-spartan" href="#subscribe">Subscribe</a>
             <a className="text-spartan" href="#newsletter">Newsletter</a>
             <a
@@ -159,15 +169,19 @@ function Footer() {
 function ArticleMeta({ article }: { article: Article }) {
   const timestamp = formatTimestamp(article.date, article.slug);
   const readingTime = getReadingTime(article.body);
+  const tagLabel = getTagVariant(article.slug);
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
-      <span className="text-spartan font-semibold uppercase tracking-wide">{article.category}</span>
+      <span className="text-spartan font-semibold uppercase tracking-wide">{tagLabel}</span>
       <span>•</span>
       <span>{timestamp}</span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
-          {getInitials(article.author)}
-        </span>
+        <img
+          src="https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWmP4wHUEgCko7dPefO5RAUgEutsh3VFXNGjiY"
+          alt={article.author}
+          className="h-6 w-6 rounded-full object-cover border border-neutral-200"
+          loading="lazy"
+        />
         By {article.author}
       </span>
       <span>•</span>
@@ -193,12 +207,13 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
             {trendingArticles.map((story) => {
               const timestamp = formatTimestamp(story.date, story.slug);
               const readingTime = getReadingTime(story.body);
+              const tagLabel = getTagVariant(story.slug);
               return (
                 <a
                   key={story.slug}
                   href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
                   onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-                  className="group block focus-ring-spartan"
+                  className="news-link group block focus-ring-spartan"
                 >
                   <div className="flex gap-3 items-start border-b border-neutral-200 pb-3 last:border-b-0">
                     <div className="w-24 overflow-hidden">
@@ -213,7 +228,7 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
                     </div>
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
-                        <span className="font-semibold text-spartan">{story.category}</span>
+                        <span className="font-semibold text-spartan">{tagLabel}</span>
                         <span className="opacity-60">•</span>
                         <span>{timestamp}</span>
                       </div>
