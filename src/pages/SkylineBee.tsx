@@ -1,6 +1,4 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
@@ -39,7 +37,12 @@ function AuthorBadge({ name, className = "" }: { name: string; className?: strin
   );
 }
 
-const NAV_ITEMS: Category[] = ["Campus", "Sports", "Opinion"];
+const NAV_ITEMS: { label: string; value: Category }[] = [
+  { label: "Home", value: "All" },
+  { label: "Campus", value: "Campus" },
+  { label: "Sports", value: "Sports" },
+  { label: "Opinion", value: "Opinion" },
+];
 
 function Header({
   onSearch,
@@ -50,10 +53,35 @@ function Header({
   query: string;
   activeCategory: Category;
 }) {
+  const editionDate = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date());
+
   return (
     <header className="sticky top-0 z-20 header-glass">
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-1 text-[11px] text-neutral-600 flex flex-wrap gap-4 items-center">
+          <span className="font-semibold text-neutral-800">{editionDate}</span>
+          <span className="uppercase tracking-[0.2em] text-neutral-500">Skyline High School</span>
+          <div className="ml-auto flex items-center gap-3 text-[11px]">
+            <a className="text-spartan" href="#subscribe">Subscribe</a>
+            <a className="text-spartan" href="#newsletter">Newsletter</a>
+            <a
+              className="text-spartan"
+              href="https://forms.gle/udmDvnCaALBYcWwD6"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Tip line
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center gap-3 py-3">
+        <div className="flex items-center gap-3 py-2">
           <div className="h-12 w-12 rounded bg-spartan text-white grid place-items-center">
             <BeeIcon className="text-lg" />
           </div>
@@ -66,22 +94,23 @@ function Header({
               value={query}
               onChange={(e) => onSearch(e.target.value)}
               placeholder="Search headlines"
-              className="h-8 text-xs border border-neutral-300 bg-white max-w-[190px] ml-auto"
+              className="h-8 text-xs border border-neutral-300 bg-white max-w-[140px] ml-auto"
             />
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-4 pb-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">
-          {["All", ...NAV_ITEMS].map((item) => {
-            const href = `/?category=${encodeURIComponent(item)}`;
-            const isActive = activeCategory === item;
+        <div className="flex flex-wrap items-center gap-4 pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-600">
+          {NAV_ITEMS.map((item) => {
+            const hrefValue = item.value === "All" ? "home" : item.value;
+            const href = `/?category=${encodeURIComponent(hrefValue)}`;
+            const isActive = activeCategory === item.value;
             return (
               <a
-                key={item}
+                key={item.label}
                 href={href}
                 onClick={(e) => handleLinkClick(e, href)}
                 className={`${isActive ? "text-spartan" : "text-neutral-600"}`}
               >
-                {item}
+                {item.label}
               </a>
             );
           })}
@@ -91,64 +120,75 @@ function Header({
   );
 }
 
-function PostCard({ post }: { post: Post }) {
-  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
-  const timestamp = formatTimestamp(post.date, post.slug);
-  const readingTime = getReadingTime(post.body);
-  const isOpinion = post.category === "Opinion";
-  const categoryClass = isOpinion ? "text-neutral-600" : "text-spartan";
-
+function LatestList({ posts }: { posts: Post[] }) {
   return (
-    <a href={href} onClick={(e) => handleLinkClick(e, href)} className="block focus-ring-spartan" aria-label={`Read ${post.title}`}>
-      <Card
-        className="glass-card-soft border border-neutral-200 overflow-hidden rounded-none"
-        style={{ viewTransitionName: `card-${post.slug}` } as React.CSSProperties}
-      >
-        <img
-          src={post.imageUrl}
-          alt={post.title}
-          width={1280}
-          height={720}
-          className="w-full h-40 md:h-44 object-cover"
-          loading="lazy"
-          style={{ viewTransitionName: `image-${post.slug}` } as React.CSSProperties}
-        />
-        <CardContent className="p-4">
-          <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
-            <span className={`font-semibold ${categoryClass}`}>
-              {post.category}
-            </span>
-            <span className="opacity-60">•</span>
-            <span>{timestamp}</span>
-          </div>
-          <h3 className="mt-2 text-xl font-extrabold headline-font headline-tight">{post.title}</h3>
-          <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
-          <div className="flex items-center justify-between mt-3">
-            <AuthorBadge name={post.author} className="text-[10px]" />
-            <span className="text-[10px] text-neutral-500">{readingTime}</span>
-          </div>
-        </CardContent>
-      </Card>
-    </a>
+    <div className="border-t border-neutral-200 pt-4 mt-6 lg:mt-0 lg:pt-0 lg:border-t-0 lg:border-l lg:pl-6">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Latest</p>
+        <span className="text-[11px] text-neutral-400">{posts.length} stories</span>
+      </div>
+      <div className="mt-4 space-y-4">
+        {posts.map((post) => {
+          const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+          const timestamp = formatTimestamp(post.date, post.slug);
+          const readingTime = getReadingTime(post.body);
+          return (
+            <a
+              key={post.id}
+              href={href}
+              onClick={(e) => handleLinkClick(e, href)}
+              className="block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan"
+            >
+              <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
+                <span className="font-semibold text-spartan">{post.category}</span>
+                <span className="opacity-60">•</span>
+                <span>{timestamp}</span>
+              </div>
+              <h3 className="mt-1 text-sm font-semibold leading-snug text-neutral-900">{post.title}</h3>
+              <p className="text-xs text-neutral-600 mt-1">{post.blurb}</p>
+              <div className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500">
+                <AuthorBadge name={post.author} className="text-[10px]" />
+                <span>•</span>
+                <span>{readingTime}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-function Hero({ article }: { article: Post }) {
+function Hero({ article, latest }: { article: Post; latest: Post[] }) {
   const timestamp = formatTimestamp(article.date, article.slug);
   const readingTime = getReadingTime(article.body);
+  const photoCaption = `${article.category} coverage at Skyline High School.`;
 
   return (
     <section className="border-b border-neutral-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 grid md:grid-cols-5 gap-6 items-start">
-        <div className="md:col-span-3 space-y-3">
-          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight">
-            <a
-              href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
-              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
-              className="focus-ring-spartan"
-            >
-              {article.title}
-            </a>
+      <div className="max-w-6xl mx-auto px-4 py-4 md:py-6 grid lg:grid-cols-12 gap-6 items-start">
+        <a
+          href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
+          onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
+          className="lg:col-span-8 space-y-3 focus-ring-spartan group"
+          aria-label={`Read ${article.title}`}
+        >
+          <div className="border border-neutral-200 overflow-hidden">
+            <img
+              src={article.imageUrl}
+              alt={article.title}
+              width={1280}
+              height={720}
+              className="w-full aspect-[16/9] object-cover"
+            />
+          </div>
+          <div className="text-[10px] uppercase tracking-wide text-neutral-500">
+            <span className="font-semibold text-spartan">{article.category}</span>
+            <span className="mx-1 opacity-60">•</span>
+            <span>{timestamp}</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-black headline-font headline-tight group-hover:text-spartan transition-colors">
+            {article.title}
           </h2>
           <p className="text-sm md:text-base text-neutral-700">
             {article.blurb}
@@ -156,31 +196,17 @@ function Hero({ article }: { article: Post }) {
           <div className="flex flex-wrap items-center gap-2 text-[11px] text-neutral-500">
             <AuthorBadge name={article.author} className="text-[11px]" />
             <span>•</span>
-            <span>{timestamp}</span>
-            <span>•</span>
             <span>{readingTime}</span>
           </div>
-          <div className="flex gap-3 pt-1">
-            <Button asChild className="bg-spartan hover:bg-spartan-strong">
-              <a
-                href={`/?page=article&slug=${encodeURIComponent(article.slug)}`}
-                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(article.slug)}`)}
-              >
-                Read the story
-              </a>
-            </Button>
-          </div>
-        </div>
-        <div className="md:col-span-2">
-          <div className="border border-neutral-200 overflow-hidden">
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              width={1280}
-              height={720}
-              className="w-full h-44 md:h-52 object-cover"
-            />
-          </div>
+          <p className="text-[11px] text-neutral-500">
+            <span className="font-semibold text-neutral-700">Caption:</span> {photoCaption}
+            <span className="mx-1">•</span>
+            <span className="font-semibold text-neutral-700">Credit:</span> Skyline Bee staff
+          </p>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-spartan">Read more</span>
+        </a>
+        <div className="lg:col-span-4">
+          <LatestList posts={latest} />
         </div>
       </div>
     </section>
@@ -240,11 +266,152 @@ export type { Category, Post };
 
 function normalizeCategory(category: string | null): Category {
   const value = category?.toLowerCase();
+  if (value === "home" || value === "all") return "All";
   if (value === "campus") return "Campus";
   if (value === "sports") return "Sports";
   if (value === "opinion") return "Opinion";
   if (value === "tech") return "Tech";
   return "All";
+}
+
+function SectionHeader({ title }: { title: string }) {
+  return (
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-lg font-black headline-font">{title}</h3>
+      <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">Section</span>
+    </div>
+  );
+}
+
+function LeadStory({ post }: { post: Post }) {
+  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+  const timestamp = formatTimestamp(post.date, post.slug);
+  const readingTime = getReadingTime(post.body);
+
+  return (
+    <a
+      href={href}
+      onClick={(e) => handleLinkClick(e, href)}
+      className="block focus-ring-spartan"
+    >
+      <div className="border border-neutral-200 overflow-hidden">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          width={1280}
+          height={720}
+          className="w-full aspect-[16/9] object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="mt-2 text-[10px] uppercase tracking-wide text-neutral-500">
+        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="mx-1 opacity-60">•</span>
+        <span>{timestamp}</span>
+      </div>
+      <h4 className="mt-2 text-xl font-bold headline-font headline-tight">{post.title}</h4>
+      <p className="text-sm text-neutral-600 mt-2">{post.blurb}</p>
+      <div className="mt-3 flex items-center gap-2 text-[10px] text-neutral-500">
+        <AuthorBadge name={post.author} className="text-[10px]" />
+        <span>•</span>
+        <span>{readingTime}</span>
+      </div>
+    </a>
+  );
+}
+
+function CompactCard({ post }: { post: Post }) {
+  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+  const timestamp = formatTimestamp(post.date, post.slug);
+  const readingTime = getReadingTime(post.body);
+
+  return (
+    <a
+      href={href}
+      onClick={(e) => handleLinkClick(e, href)}
+      className="block border border-neutral-200 p-3 focus-ring-spartan"
+    >
+      <div className="overflow-hidden border border-neutral-200">
+        <img
+          src={post.imageUrl}
+          alt={post.title}
+          width={1280}
+          height={720}
+          className="w-full aspect-[16/9] object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="mt-2 text-[10px] uppercase tracking-wide text-neutral-500">
+        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="mx-1 opacity-60">•</span>
+        <span>{timestamp}</span>
+      </div>
+      <h5 className="mt-2 text-sm font-semibold leading-snug">{post.title}</h5>
+      <p className="text-xs text-neutral-600 mt-2">{post.blurb}</p>
+      <div className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500">
+        <AuthorBadge name={post.author} className="text-[10px]" />
+        <span>•</span>
+        <span>{readingTime}</span>
+      </div>
+    </a>
+  );
+}
+
+function ListStory({ post }: { post: Post }) {
+  const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+  const timestamp = formatTimestamp(post.date, post.slug);
+  const readingTime = getReadingTime(post.body);
+
+  return (
+    <a
+      href={href}
+      onClick={(e) => handleLinkClick(e, href)}
+      className="block border-b border-neutral-200 pb-3 last:border-b-0 last:pb-0 focus-ring-spartan"
+    >
+      <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
+        <span className="font-semibold text-spartan">{post.category}</span>
+        <span className="opacity-60">•</span>
+        <span>{timestamp}</span>
+      </div>
+      <h5 className="mt-1 text-sm font-semibold leading-snug">{post.title}</h5>
+      <p className="text-xs text-neutral-600 mt-1">{post.blurb}</p>
+      <div className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500">
+        <AuthorBadge name={post.author} className="text-[10px]" />
+        <span>•</span>
+        <span>{readingTime}</span>
+      </div>
+    </a>
+  );
+}
+
+function CategorySection({ title, posts }: { title: string; posts: Post[] }) {
+  if (posts.length === 0) return null;
+  const [lead, ...rest] = posts;
+  const cardPosts = rest.slice(0, 2);
+  const listPosts = rest.slice(2, 6);
+
+  return (
+    <section className="max-w-6xl mx-auto px-4 py-8 border-t border-neutral-200">
+      <SectionHeader title={title} />
+      <div className="grid lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-5">
+          <LeadStory post={lead} />
+        </div>
+        <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+          {cardPosts.map((post) => (
+            <CompactCard key={post.id} post={post} />
+          ))}
+          {listPosts.length > 0 && (
+            <div className="sm:col-span-2 space-y-3">
+              {listPosts.map((post) => (
+                <ListStory key={post.id} post={post} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default function SkylineBee() {
@@ -253,14 +420,23 @@ export default function SkylineBee() {
   const activeCategory = normalizeCategory(url.searchParams.get("category"));
 
   const dailyPosts = useMemo(() => getDailyShuffle(ARTICLES), []);
+  const latestPosts = useMemo(
+    () =>
+      [...ARTICLES]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+    [],
+  );
   const featured = dailyPosts[0];
   const filteredPosts = useMemo(
     () => filterPosts(dailyPosts, activeCategory, query),
     [dailyPosts, activeCategory, query],
   );
   const rest = featured ? filteredPosts.filter((post) => post.id !== featured.id) : filteredPosts;
-  const secondary = rest.slice(0, 3);
-  const remaining = rest.slice(3);
+  const latestColumn = latestPosts.filter((post) => post.id !== featured?.id).slice(0, 5);
+  const trendingPosts = latestPosts.slice(0, 3);
+  const campusPosts = rest.filter((post) => post.category === "Campus");
+  const sportsPosts = rest.filter((post) => post.category === "Sports");
+  const opinionPosts = rest.filter((post) => post.category === "Opinion");
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
@@ -292,23 +468,41 @@ export default function SkylineBee() {
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} activeCategory={activeCategory} />
-        {featured && <Hero article={featured} />}
+        {featured && <Hero article={featured} latest={latestColumn} />}
 
-        {secondary.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {secondary.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+        {trendingPosts.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700">Most read / Trending</h3>
+              <span className="text-[11px] text-neutral-400">Updated daily</span>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {trendingPosts.map((post) => {
+                const href = `/?page=article&slug=${encodeURIComponent(post.slug)}`;
+                const timestamp = formatTimestamp(post.date, post.slug);
+                return (
+                  <a
+                    key={post.id}
+                    href={href}
+                    onClick={(e) => handleLinkClick(e, href)}
+                    className="block border border-neutral-200 p-3 focus-ring-spartan"
+                  >
+                    <div className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-neutral-500">
+                      <span className="font-semibold text-spartan">{post.category}</span>
+                      <span className="opacity-60">•</span>
+                      <span>{timestamp}</span>
+                    </div>
+                    <h4 className="mt-2 text-sm font-semibold leading-snug">{post.title}</h4>
+                  </a>
+                );
+              })}
+            </div>
           </section>
         )}
 
-        {remaining.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 pb-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {remaining.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </section>
-        )}
+        <CategorySection title="Campus" posts={campusPosts} />
+        <CategorySection title="Sports" posts={sportsPosts} />
+        <CategorySection title="Opinion" posts={opinionPosts} />
 
         <Footer />
       </div>
