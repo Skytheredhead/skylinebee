@@ -18,7 +18,7 @@ export const ARTICLES: Article[] = [
     blurb: "It already moved to the poster wall.",
     category: "Campus",
     author: "Skylar Enns",
-    date: "Jan 12, 2026",
+    date: "Jan 9, 2026 9:10 AM",
     imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWBFhqfPokK3exYpJl5UGsRXyo8jhWL9qMPCQr",
     body: [
       "After Skyline’s chant debut a few assemblies ago, it seemingly has faded to just a poster on the wall next to the gym.",
@@ -34,7 +34,7 @@ export const ARTICLES: Article[] = [
     blurb: "The crowd is quieter than the sideline whistles.",
     category: "Sports",
     author: "Skylar Enns",
-    date: "Jan 11, 2026",
+    date: "Jan 9, 2026 8:45 AM",
     imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWjSRQpflrQ58RPzsbnV4Xmr10NFxofAB7JyDw",
     body: [
       "Skyline’s Girls Flag Football team has been ranked #1 in Washington State despite zero fans.",
@@ -51,7 +51,7 @@ export const ARTICLES: Article[] = [
     blurb: "The pythagorean theorem is winning.",
     category: "Campus",
     author: "Skylar Enns",
-    date: "Jan 10, 2026",
+    date: "Jan 8, 2026 9:30 AM",
     imageUrl: "https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWjMuOgBrQ58RPzsbnV4Xmr10NFxofAB7JyDwa",
     body: [
       "A district-funded study into Skyline’s lack of school spirit showed a shocking correlation between academic success and school spirit.",

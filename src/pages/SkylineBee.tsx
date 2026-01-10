@@ -169,7 +169,6 @@ function LatestList({ posts }: { posts: Post[] }) {
 function Hero({ article, latest }: { article: Post; latest: Post[] }) {
   const timestamp = formatTimestamp(article.date, article.slug);
   const readingTime = getReadingTime(article.body);
-  const photoCaption = `${article.category} coverage at Skyline High School.`;
   const tagLabel = getTagVariant(article.slug);
 
   return (
@@ -190,11 +189,6 @@ function Hero({ article, latest }: { article: Post; latest: Post[] }) {
               className="w-full aspect-[16/9] object-cover max-h-72"
             />
           </div>
-          <p className="text-[11px] text-neutral-500">
-            <span className="font-semibold text-neutral-700">Caption:</span> {photoCaption}
-            <span className="mx-1">•</span>
-            <span className="font-semibold text-neutral-700">Credit:</span> Skyline Bee staff
-          </p>
           <div className="text-[10px] uppercase tracking-wide text-neutral-500">
             <span className="font-semibold text-spartan">{tagLabel}</span>
             <span className="mx-1 opacity-60">•</span>
@@ -495,14 +489,8 @@ export default function SkylineBee() {
     return selected;
   };
 
-  const breakingStory = modulePool.find((post) => !usedIds.has(post.id)) ?? null;
-  if (breakingStory) {
-    usedIds.add(breakingStory.id);
-  }
-
   const latestColumn = takeUnique(modulePool, 3);
-  const lowerCards = takeUnique(modulePool, 3);
-  const topStories = takeUnique(modulePool, 4);
+  const topStories = takeUnique(modulePool, 7);
   const trendingPosts = takeUnique(modulePool, 3);
   const campusPosts = takeUnique(rest.filter((post) => post.category === "Campus"), 8);
   const sportsPosts = takeUnique(rest.filter((post) => post.category === "Sports"), 8);
@@ -538,35 +526,7 @@ export default function SkylineBee() {
     <main className="page-aurora text-neutral-900">
       <div className="page-shell">
         <Header onSearch={setQuery} query={query} activeCategory={activeCategory} />
-        {breakingStory && (
-          <div className="border-b border-neutral-200 bg-white">
-            <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
-              <span className="font-semibold text-spartan">Breaking:</span>{" "}
-              <a
-                href={`/?page=article&slug=${encodeURIComponent(breakingStory.slug)}`}
-                onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(breakingStory.slug)}`)}
-                className="news-link"
-              >
-                {breakingStory.title}
-              </a>
-            </div>
-          </div>
-        )}
         {featured && <Hero article={featured} latest={latestColumn} />}
-
-        {lowerCards.length > 0 && (
-          <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700">More headlines</h3>
-              <span className="text-[11px] text-neutral-400">In case you missed it</span>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {lowerCards.map((post) => (
-                <TopStoryCard key={post.id} post={post} />
-              ))}
-            </div>
-          </section>
-        )}
 
         {topStories.length > 0 && (
           <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
@@ -574,7 +534,7 @@ export default function SkylineBee() {
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700">Top stories</h3>
               <span className="text-[11px] text-neutral-400">Editor&apos;s picks</span>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {topStories.map((post) => (
                 <TopStoryCard key={post.id} post={post} />
               ))}

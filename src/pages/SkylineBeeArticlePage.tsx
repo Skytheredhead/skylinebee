@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
-import { formatTimestamp, getDailyShuffle, getReadingTime } from "@/utils/articleMeta";
+import { formatTimestamp, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -42,8 +42,6 @@ function getTagVariant(text: string) {
 }
 
 function Header() {
-  const dailyFeatured = getDailyShuffle(ARTICLES)[0];
-  const breakingTitle = dailyFeatured?.title ?? "Top stories";
   const editionDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     month: "long",
@@ -101,11 +99,6 @@ function Header() {
               </a>
             );
           })}
-        </div>
-      </div>
-      <div className="border-t border-spartan-soft bg-white/80">
-        <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
-          <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
       </div>
     </header>
