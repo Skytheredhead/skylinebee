@@ -236,7 +236,7 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
           <p className="text-xs text-neutral-500">
-            This site is a class project showcasing fictional satire and parody coverage.
+            This site is a class project, all articles are satire.
           </p>
         </div>
         <div>
@@ -500,7 +500,8 @@ export default function SkylineBee() {
     usedIds.add(breakingStory.id);
   }
 
-  const latestColumn = takeUnique(modulePool, 5);
+  const latestColumn = takeUnique(modulePool, 3);
+  const lowerCards = takeUnique(modulePool, 3);
   const topStories = takeUnique(modulePool, 4);
   const trendingPosts = takeUnique(modulePool, 3);
   const campusPosts = takeUnique(rest.filter((post) => post.category === "Campus"), 8);
@@ -516,7 +517,7 @@ export default function SkylineBee() {
       // 1) All + empty returns all
       console.assert(filterPosts(ARTICLES, "All", "").length === ARTICLES.length, "Test 1 failed: All should return all posts");
       // 2) Category filter works
-      console.assert(filterPosts(ARTICLES, "Campus", "").length === 6, "Test 2 failed: Campus should return 6 posts");
+      console.assert(filterPosts(ARTICLES, "Campus", "").length === 8, "Test 2 failed: Campus should return 8 posts");
       // 3) Query filter is case-insensitive
       console.assert(filterPosts(ARTICLES, "All", "flagpole").length === 1, "Test 3 failed: query 'flagpole' should match 1 post");
       // 4) Combined filter
@@ -552,6 +553,20 @@ export default function SkylineBee() {
           </div>
         )}
         {featured && <Hero article={featured} latest={latestColumn} />}
+
+        {lowerCards.length > 0 && (
+          <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700">More headlines</h3>
+              <span className="text-[11px] text-neutral-400">In case you missed it</span>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {lowerCards.map((post) => (
+                <TopStoryCard key={post.id} post={post} />
+              ))}
+            </div>
+          </section>
+        )}
 
         {topStories.length > 0 && (
           <section className="max-w-6xl mx-auto px-4 py-6 border-b border-neutral-200">

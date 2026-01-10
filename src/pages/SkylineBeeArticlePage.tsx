@@ -130,7 +130,7 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
           <p className="text-xs text-neutral-500">
-            This site is a class project showcasing fictional satire and parody coverage.
+            This site is a class project, all articles are satire.
           </p>
         </div>
         <div>
