@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Article, ARTICLES, getArticleBySlugOrId } from "./articleData";
 import { handleLinkClick } from "@/utils/navigation";
-import { formatTimestamp, getDailyShuffle, getInitials, getReadingTime } from "@/utils/articleMeta";
+import { formatTimestamp, getReadingTime } from "@/utils/articleMeta";
 
 function Icon({ label, glyph, className = "" }: { label: string; glyph: string; className?: string }) {
   return (
@@ -31,14 +31,46 @@ const ChevronLeftIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
+const TAG_VARIANTS = ["Campus", "Opinion", "News", "Features", "Culture", "Arts"];
+
+function getTagVariant(text: string) {
+  let hash = 0;
+  for (let i = 0; i < text.length; i += 1) {
+    hash = (hash * 31 + text.charCodeAt(i)) % TAG_VARIANTS.length;
+  }
+  return TAG_VARIANTS[Math.abs(hash) % TAG_VARIANTS.length];
+}
+
 function Header() {
-  const dailyFeatured = getDailyShuffle(ARTICLES)[0];
-  const breakingTitle = dailyFeatured?.title ?? "Top stories";
+  const editionDate = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date());
 
   return (
     <header className="sticky top-0 z-20 header-glass">
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-0.5 text-[10px] text-neutral-600 flex flex-wrap gap-4 items-center">
+          <span className="font-semibold text-neutral-800">{editionDate}</span>
+          <span className="uppercase tracking-[0.2em] text-neutral-500">Skyline High School</span>
+          <div className="ml-auto flex items-center gap-3 text-[10px]">
+            <a className="text-spartan" href="#subscribe">Subscribe</a>
+            <a className="text-spartan" href="#newsletter">Newsletter</a>
+            <a
+              className="text-spartan"
+              href="https://forms.gle/udmDvnCaALBYcWwD6"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Tip line
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center gap-3 py-3">
+        <div className="flex items-center gap-3 py-2">
           <div className="h-12 w-12 rounded-full bg-spartan text-white grid place-items-center shadow logo-animate">
             <BeeIcon className="text-lg" />
           </div>
@@ -49,7 +81,7 @@ function Header() {
           <div className="ml-auto flex items-center gap-2 w-full max-w-sm">
             <Input
               placeholder="Search headlines"
-              className="h-8 text-xs border-0 surface-input max-w-[190px] ml-auto"
+              className="h-8 text-xs border-0 surface-input max-w-[140px] ml-auto"
             />
           </div>
         </div>
@@ -67,11 +99,6 @@ function Header() {
               </a>
             );
           })}
-        </div>
-      </div>
-      <div className="border-t border-spartan-soft bg-white/80">
-        <div className="max-w-6xl mx-auto px-4 py-1 text-xs text-neutral-600">
-          <span className="font-semibold text-spartan">Breaking:</span> {breakingTitle}
         </div>
       </div>
     </header>
@@ -96,7 +123,7 @@ function Footer() {
         <div>
           <p className="text-sm font-semibold text-neutral-900 mb-2">About</p>
           <p className="text-xs text-neutral-500">
-            This site is a class project showcasing fictional satire and parody coverage.
+            This site is a class project, all articles are satire.
           </p>
         </div>
         <div>
@@ -135,19 +162,23 @@ function Footer() {
 function ArticleMeta({ article }: { article: Article }) {
   const timestamp = formatTimestamp(article.date, article.slug);
   const readingTime = getReadingTime(article.body);
+  const tagLabel = getTagVariant(article.slug);
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500">
-      <span className="text-spartan font-semibold uppercase tracking-wide">{article.category}</span>
+      <span className="text-spartan font-semibold uppercase tracking-wide">{tagLabel}</span>
       <span>•</span>
       <span>{timestamp}</span>
-      <span>•</span>
-      <span>{readingTime}</span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-6 w-6 rounded-full bg-neutral-200 text-[10px] font-semibold text-neutral-700 grid place-items-center">
-          {getInitials(article.author)}
-        </span>
+        <img
+          src="https://8ky41qbhzw.ufs.sh/f/JiAETYwVkpaWmP4wHUEgCko7dPefO5RAUgEutsh3VFXNGjiY"
+          alt={article.author}
+          className="h-6 w-6 rounded-full object-cover border border-neutral-200"
+          loading="lazy"
+        />
         By {article.author}
       </span>
+      <span>•</span>
+      <span>{readingTime}</span>
     </div>
   );
 }
@@ -160,53 +191,58 @@ function Sidebar({ currentSlug }: { currentSlug: string }) {
 
   return (
     <aside className="mt-10 md:mt-0 md:pl-8 md:w-80 lg:w-96 shrink-0 h-full">
-      <div className="flex flex-col h-full gap-4">
-        <div className="rounded-2xl surface-card p-4 flex-1">
+      <div className="flex flex-col h-full gap-6">
+        <div className="flex-1">
           <p className="text-sm font-semibold">Trending Articles</p>
           <div className="h-px bg-black/80 my-3" />
 
-          <div className="space-y-3">
-          {trendingArticles.map((story) => {
-            const timestamp = formatTimestamp(story.date, story.slug);
-            const readingTime = getReadingTime(story.body);
-            return (
-            <a
-              key={story.slug}
-              href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
-              onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
-              className="group block focus-ring-spartan rounded-2xl"
-            >
-              <div className="flex gap-3 items-center rounded-2xl surface-card-muted card-animate p-3">
-                  <div className="h-20 w-24 rounded-xl overflow-hidden">
-                    <img
-                      src={story.imageUrl}
-                      alt={story.title}
-                      width={1280}
-                      height={720}
-                      className="h-full w-full object-cover card-media"
-                      loading="lazy"
-                    />
+          <div className="space-y-4">
+            {trendingArticles.map((story) => {
+              const timestamp = formatTimestamp(story.date, story.slug);
+              const readingTime = getReadingTime(story.body);
+              const tagLabel = getTagVariant(story.slug);
+              return (
+                <a
+                  key={story.slug}
+                  href={`/?page=article&slug=${encodeURIComponent(story.slug)}`}
+                  onClick={(e) => handleLinkClick(e, `/?page=article&slug=${encodeURIComponent(story.slug)}`)}
+                  className="news-link group block focus-ring-spartan"
+                >
+                  <div className="flex gap-3 items-start border-b border-neutral-200 pb-3 last:border-b-0">
+                    <div className="w-24 overflow-hidden">
+                      <img
+                        src={story.imageUrl}
+                        alt={story.title}
+                        width={1280}
+                        height={720}
+                        className="w-full aspect-[16/9] object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
+                        <span className="font-semibold text-spartan">{tagLabel}</span>
+                        <span className="opacity-60">•</span>
+                        <span>{timestamp}</span>
+                      </div>
+                      <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
+                        {story.title}
+                      </h3>
+                      <p className="text-xs text-neutral-500">{story.blurb}</p>
+                      <div className="flex items-center gap-2 text-[11px] text-neutral-400">
+                        <span>By {story.author}</span>
+                        <span>•</span>
+                        <span>{readingTime}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-1 space-y-1">
-                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-neutral-500">
-                    <span className="font-semibold text-spartan">{story.category}</span>
-                    <span className="opacity-60">•</span>
-                    <span>{timestamp}</span>
-                  </div>
-                  <h3 className="text-sm font-semibold leading-snug group-hover:text-spartan transition-colors">
-                    {story.title}
-                  </h3>
-                  <p className="text-xs text-neutral-500">{story.blurb}</p>
-                  <span className="text-[11px] text-neutral-400">{readingTime}</span>
-                </div>
-              </div>
-            </a>
-          );
-          })}
-        </div>
+                </a>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="rounded-2xl surface-card p-4 flex-1">
+        <div className="border-t border-neutral-200 pt-4 flex-1">
           <p className="text-sm font-semibold mb-2">Send us your ideas</p>
           <p className="text-xs text-neutral-500">
             Have a headline that belongs here. Share it through{" "}
@@ -257,7 +293,7 @@ export default function SkylineBeeArticlePage() {
         <article className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row md:items-stretch md:gap-6 lg:gap-8">
             <div
-              className="md:min-w-0 md:flex-1 rounded-2xl surface-card p-6 md:p-7 h-full"
+              className="md:min-w-0 md:flex-1 md:pr-6 h-full"
               style={{ viewTransitionName: `card-${article.slug}` } as React.CSSProperties}
             >
               <h1 className="text-3xl md:text-4xl font-black headline-font headline-tight">
@@ -269,7 +305,7 @@ export default function SkylineBeeArticlePage() {
               </div>
 
               <div
-                className="mt-4 rounded-2xl overflow-hidden surface-card article-hero max-w-3xl mx-auto"
+                className="mt-4 overflow-hidden max-w-3xl mx-auto"
                 style={{ viewTransitionName: `image-${article.slug}` } as React.CSSProperties}
               >
                 <img
